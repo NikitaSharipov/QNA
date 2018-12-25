@@ -5,9 +5,9 @@ feature 'User can view the question and answers to it', %q{
   As an user
   I'd like to view the question and answers to it
 } do
-
-  given!(:question) { create(:question) }
-  given!(:answers) { create_list(:answer, 3, question: question) }
+  given(:user) { create :user }
+  given!(:question) { create(:question, author: user) }
+  given!(:answers) { create_list(:answer, 3, question: question, author: user) }
 
   scenario 'View the question' do
     visit question_path(question)

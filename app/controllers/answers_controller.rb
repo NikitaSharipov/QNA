@@ -7,6 +7,7 @@ class AnswersController < ApplicationController
 
   def create
     @exposed_answer = question.answers.new(answer_params)
+    answer.author = current_user
 
     if answer.save
       redirect_to answer, notice: 'Your answer successfully created.'
@@ -14,6 +15,18 @@ class AnswersController < ApplicationController
       render :new
     end
   end
+
+  def destroy
+    if current_user.author_of?(answer)
+      answer.destroy
+      flash[:notice] = 'Your answer successfully deleted.'
+    else
+      flash[:notice] = "You can not delete another user's answer"
+    end
+    redirect_to answer.question
+  end
+
+  private
 
   def answer_params
     params.require(:answer).permit(:body)

@@ -1,1 +1,3 @@
-p = answer.body
+p class="answer_title#{answer.id}"
+  = answer.body
+  = link_to 'Delete', answer, method: :delete
