@@ -1,3 +1,4 @@
 p class="question_title#{question.id}"
   = question.title
-  = link_to 'Delete', question, method: :delete
+  -if current_user&.author_of?(question)
+    = link_to 'Delete', question, method: :delete

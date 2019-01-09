@@ -27,10 +27,10 @@ feature 'User can delete his question', %q{
     end
 
     scenario "Authenricated user try to delete other's user question" do
-      expect(page).to have_content question.title
-      within(".question_title#{another_question.id}") { click_on 'Delete' }
-      expect(page).to have_content "You can not delete another user's question"
-      expect(page).to have_content another_question.title
+      within(".question_title#{another_question.id}") do
+        expect(page).to have_content another_question.title
+        expect(page).to_not have_link 'Delete'
+      end
     end
   end
 end

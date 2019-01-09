@@ -10,7 +10,7 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(user) }
     context 'with valid attributes' do
       it 'saves a new question in the database' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
       end
 
       it 'redirects to show view' do
@@ -72,16 +72,33 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
 
-    it 'deletes the question' do
-      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+    before { question }
+
+    context 'Authenticated user tries' do
+      before { login(user) }
+
+      let!(:another_user) { create(:user) }
+      let!(:foreign_question) { create(:question, author: another_user) }
+
+      it 'deletes his question' do
+        expect { delete :destroy, params: { id: question } }.to change(user.questions, :count).by(-1)
+      end
+
+      it 'deletes not his question' do
+        expect { delete :destroy, params: { id: foreign_question } }.not_to change(Question, :count)
+      end
+
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 'redirects to index' do
-      delete :destroy, params: { id: question }
-      expect(response).to redirect_to questions_path
+    it 'Not Authenticated user tries deletes a question' do
+      expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
     end
+
   end
 
 end

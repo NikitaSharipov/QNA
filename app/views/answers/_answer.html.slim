@@ -1,3 +1,5 @@
-p class="answer_title#{answer.id}"
-  = answer.body
-  = link_to 'Delete', answer, method: :delete
+-if answer.persisted?
+  p class="answer_title#{answer.id}"
+    = answer.body
+    -if current_user&.author_of?(answer)
+      = link_to 'Delete', answer, method: :delete

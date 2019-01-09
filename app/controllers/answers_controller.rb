@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
 
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!
 
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answer
@@ -10,9 +10,9 @@ class AnswersController < ApplicationController
     answer.author = current_user
 
     if answer.save
-      redirect_to answer, notice: 'Your answer successfully created.'
+      redirect_to question, notice: 'Your answer successfully created.'
     else
-      render :new
+      render 'questions/show'
     end
   end
 

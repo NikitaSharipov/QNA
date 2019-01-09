@@ -29,10 +29,10 @@ feature 'User can delete his answer', %q{
     end
 
     scenario "Authenricated user try to delete other's user answer" do
-      expect(page).to have_content answer.body
-      within(".answer_title#{another_answer.id}") { click_on 'Delete' }
-      expect(page).to have_content "You can not delete another user's answer"
-      expect(page).to have_content another_answer.body
+      within(".answer_title#{another_answer.id}") do
+        expect(page).to have_content another_answer.body
+        expect(page).to_not have_link 'Delete'
+      end
     end
   end
 end
