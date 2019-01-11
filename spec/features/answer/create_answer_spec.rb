@@ -9,7 +9,7 @@ feature 'User can answer the question', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
 
-  describe 'Authenricated user' do
+  describe 'Authenricated user', js: true do
 
     background do
       sign_in(user)
@@ -20,7 +20,6 @@ feature 'User can answer the question', %q{
       fill_in 'Body', with: 'text text text'
       click_on 'Answer!'
 
-      expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'text text text'
     end
 

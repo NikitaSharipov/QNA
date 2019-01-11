@@ -8,12 +8,12 @@ class AnswersController < ApplicationController
   def create
     @exposed_answer = question.answers.new(answer_params)
     answer.author = current_user
+    answer.save
+  end
 
-    if answer.save
-      redirect_to question, notice: 'Your answer successfully created.'
-    else
-      render 'questions/show'
-    end
+  def update
+    answer.update(answer_params) if current_user.author_of?(answer)
+    @exposed_question = answer.question
   end
 
   def destroy
