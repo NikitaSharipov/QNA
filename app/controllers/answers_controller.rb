@@ -26,6 +26,12 @@ class AnswersController < ApplicationController
     redirect_to answer.question
   end
 
+  def best
+    @answer_best = answer.chose_best
+    answer.best! if current_user.author_of?(answer.question)
+    @answer_best&.reload
+  end
+
   private
 
   def answer_params

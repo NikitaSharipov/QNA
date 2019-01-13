@@ -21,6 +21,8 @@ feature 'User can answer the question', %q{
       click_on 'Answer!'
 
       expect(page).to have_content 'text text text'
+
+      expect(page).to have_field("answer_body", :with => "")
     end
 
     scenario 'answer the question with errors' do

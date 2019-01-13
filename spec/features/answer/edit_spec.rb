@@ -7,8 +7,12 @@ feature 'User can edit his answer', %q{
 } do
 
   given!(:user) { create(:user) }
+  given(:another_user) { create :user }
+
   given!(:question) { create(:question, author: user) }
+
   given!(:answer) { create(:answer, question: question, author: user) }
+  given!(:another_answer) { create(:answer, question: question, author: another_user) }
 
   scenario 'Unauthenticated can not edit answer' do
     visit question_path(question)
@@ -16,13 +20,16 @@ feature 'User can edit his answer', %q{
     expect(page).to_not have_link 'Edit'
   end
 
-  describe 'Authenticated user' do
-    scenario 'edits his answer', js: true do
-      sign_in user
+  describe 'Authenticated user', js: true  do
+
+    background do
+      sign_in(user)
       visit question_path(question)
+    end
+
+    scenario 'edits his answer' do
 
       click_on 'Edit'
-
 
       within '.answers' do
         fill_in 'Your answer', with: 'edited answer'
@@ -34,9 +41,24 @@ feature 'User can edit his answer', %q{
       end
     end
 
-    scenario 'edits his answer'
+    scenario 'edits his answer with errors' do
 
-    scenario 'edits his answer with errors'
-    scenario "tries to edit other user's question"
+      click_on 'Edit'
+
+      within '.answers' do
+        fill_in 'Your answer', with: ''
+        click_on 'Save'
+      end
+      expect(page).to have_content "Body can't be blank"
+
+    end
+
+    scenario "tries to edit other user's question" do
+
+      within(".answer_title#{another_answer.id}") do
+        expect(page).to have_content another_answer.body
+        expect(page).to_not have_link 'Edit'
+      end
+    end
   end
 end

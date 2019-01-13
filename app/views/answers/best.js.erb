@@ -1,0 +1,11 @@
+$('<%= ".answer_title#{answer.id}" %>').replaceWith('<%= j render answer %>');
+$('<%= ".answer_title#{answer.id}" %>').insertAfter(".answer");
+
+<% if @answer_best != nil %>
+  <% answer = @answer_best %>
+  $('<%= ".answer_title#{@answer_best.id}" %>').replaceWith('<%= j render answer %>');
+<% end %>
+
+
+
+

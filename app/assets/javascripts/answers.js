@@ -6,4 +6,8 @@ $(document).on('turbolinks:load', function(){
        console.log(answerId);
        $('form#edit-answer-' + answerId).removeClass('hidden');
    })
+
+  var x = $('.best').parent()
+  x.insertAfter(".answer");
+
 });

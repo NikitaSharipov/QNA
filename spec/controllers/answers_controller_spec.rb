@@ -60,41 +60,82 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'Not Authenticated user tries deletes a answer' do
-      expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
+      expect { delete :destroy, params: { id: answer }, format: :js }.not_to change(Answer, :count)
     end
 
   end
 
   describe 'PATCH #update' do
 
-    context 'Answer author tries to update answer' do
+    context 'Authenticated ' do
+
+      let!(:another_user) { create(:user) }
+      let!(:foreign_answer) { create(:answer, question: question, author: another_user) }
+
       before { login(user) }
 
-      context 'with valid attributes' do
-        it 'changes answer attributes' do
-          patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
-          answer.reload
-          expect(answer.body).to eq 'new body'
+      context 'answer author tries to update answer' do
+
+        context 'with valid attributes' do
+          it 'changes answer attributes' do
+            patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+            answer.reload
+            expect(answer.body).to eq 'new body'
+          end
+
+          it 'renders update view' do
+            patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+            expect(response).to render_template :update
+          end
         end
 
-        it 'renders update view' do
-          patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
-          expect(response).to render_template :update
-        end
-      end
+        context 'with invalid attributes' do
+          it 'does not change answer attributes' do
+            expect do
+              patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+            end.to_not change(answer, :body)
+          end
 
-      context 'with invalid attributes' do
-        it 'does not change answer attributes' do
-          expect do
+          it 'renders update view' do
             patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
-          end.to_not change(answer, :body)
-        end
-
-        it 'renders update view' do
-          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
-          expect(response).to render_template :update
+            expect(response).to render_template :update
+          end
         end
       end
+
+      it 'user tries to update not his answer' do
+        patch :update, params: { id: foreign_answer, answer: { body: 'new body' } }, format: :js
+        foreign_answer.reload
+        expect(foreign_answer.body).to_not eq 'new body'
+      end
+    end
+
+
+  end
+
+  describe 'PATCH #best' do
+    context 'Authenticated ' do
+
+      let!(:another_user) { create(:user) }
+      let!(:foreign_answer) { create(:answer, question: question, author: another_user) }
+
+      before { login(user) }
+
+      it 'change best question' do
+        post :best, params: { id: answer }, format: :js
+        expect { answer.reload }.to change(answer, :best?)
+      end
+
+      it 'renders best template' do
+        post :best, params: { id: answer }, format: :js
+        expect(response).to render_template :best
+      end
+
+      it "user try's to mark as best not his question" do
+        post :best, params: { id: foreign_answer }, format: :js
+        expect { answer.reload }.not_to change(answer, :best?)
+      end
+
     end
   end
 
