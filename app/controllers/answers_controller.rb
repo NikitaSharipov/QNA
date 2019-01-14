@@ -27,7 +27,7 @@ class AnswersController < ApplicationController
   end
 
   def best
-    @answer_best = answer.chose_best
+    @answer_best = answer.question.best_answer
     answer.best! if current_user.author_of?(answer.question)
     @answer_best&.reload
   end

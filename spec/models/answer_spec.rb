@@ -11,18 +11,25 @@ RSpec.describe Answer, type: :model do
     let(:another_answer) { create(:answer, question: question, author: user) }
 
     it "mark answer as best" do
-      answer.mark_best
-      expect(answer.best).to be true
+      answer.best!
+      expect(answer).to be_best
     end
 
-    it 'only one answer must be best' do
-      another_answer.mark_best
+    describe 'best answer' do
 
-      answer.best!
-      another_answer.reload
+      before do
+        another_answer.best!
+        answer.best!
+        another_answer.reload
+      end
 
-      expect(answer.best).to be true
-      expect(another_answer.best).to be false
+      it 'turn best flag on new best answer on' do
+        expect(answer).to be_best
+      end
+
+      it 'turn best flag on old best answer off' do
+        expect(another_answer).not_to be_best
+      end
     end
   end
 end

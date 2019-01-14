@@ -1,7 +1,7 @@
 -if answer.persisted?
   div class="answer_title#{answer.id}"
     -if answer.best?
-      div class ="best"
+      .best
       span> Best answer!
     = answer.body
     -if current_user&.author_of?(answer)
