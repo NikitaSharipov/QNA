@@ -8,12 +8,12 @@ class AnswersController < ApplicationController
   def create
     @exposed_answer = question.answers.new(answer_params)
     answer.author = current_user
+    answer.save
+  end
 
-    if answer.save
-      redirect_to question, notice: 'Your answer successfully created.'
-    else
-      render 'questions/show'
-    end
+  def update
+    answer.update(answer_params) if current_user.author_of?(answer)
+    @exposed_question = answer.question
   end
 
   def destroy
@@ -24,6 +24,12 @@ class AnswersController < ApplicationController
       flash[:notice] = "You can not delete another user's answer"
     end
     redirect_to answer.question
+  end
+
+  def best
+    @answer_best = answer.question.best_answer
+    answer.best! if current_user.author_of?(answer.question)
+    @answer_best&.reload
   end
 
   private

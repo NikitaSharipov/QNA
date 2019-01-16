@@ -1,4 +1,11 @@
 p class="question_title#{question.id}"
   = question.title
   -if current_user&.author_of?(question)
-    = link_to 'Delete', question, method: :delete
+    = link_to 'Delete', question, method: :delete, class: 'btn btn-link'
+    = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
+  =link_to 'Show', question, class: 'btn btn-link'
+
+= form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
+  = f.label :title, 'Your question title'
+  = f.text_area :title
+  = f.submit 'Save'

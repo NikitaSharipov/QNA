@@ -1,3 +1,6 @@
-= render questions
+.questions
+  = render questions
 
-p= link_to 'Ask question', new_question_path
+.question-errors
+  = render 'shared/errors', resource: question
+p= link_to 'Ask question', new_question_path, class: 'btn btn-link'

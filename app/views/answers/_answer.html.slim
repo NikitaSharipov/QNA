@@ -1,5 +1,16 @@
 -if answer.persisted?
-  p class="answer_title#{answer.id}"
+  div class="answer_title#{answer.id}"
+    -if answer.best?
+      .best
+      span> Best answer!
     = answer.body
     -if current_user&.author_of?(answer)
-      = link_to 'Delete', answer, method: :delete
+      = link_to 'Delete', answer, method: :delete, remote: true
+      = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      -if !answer.best?
+        = link_to 'Mark as best', best_answer_path(answer), method: :post, remote: true
+      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+        = f.label :body, 'Your answer'
+        = f.text_area :body
+        = f.submit 'Save'
+
