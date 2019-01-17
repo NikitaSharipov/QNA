@@ -1,13 +1,24 @@
 h1= question.title
 p= question.body
 
+- if question.files.attached?
+  - question.files.each do |file|
+    div class = "file_#{file.id}"
+      p= link_to file.filename.to_s, url_for(file)
+      -if current_user&.author_of?(question)
+        p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
+
 .answers
   div class="answer"
   = render question.answers
 
 .answer-errors
   = render 'shared/errors', resource: answer
-= form_with model: [question, answer], class: 'new-answer' do |f|
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Answer!'
+p= form_with model: [question, answer], class: 'new-answer' do |f|
+  p
+    = f.label :body
+    = f.text_area :body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true
+  p= f.submit 'Answer!'
