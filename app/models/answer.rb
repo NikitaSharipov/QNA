@@ -4,6 +4,8 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
+  has_many_attached :files
+
   def best!
     unless self.best?
       transaction do

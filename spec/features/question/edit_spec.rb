@@ -7,10 +7,7 @@ feature 'User can edit his question', %q{
 } do
 
   given!(:user) { create(:user) }
-  given(:another_user) { create :user }
-
   given!(:question) { create(:question, author: user) }
-  given!(:another_question) { create(:question, author: another_user) }
 
   scenario 'Unauthenticated can not edit question' do
     visit questions_path
@@ -40,6 +37,21 @@ feature 'User can edit his question', %q{
       end
     end
 
+    scenario 'edit the question with attached file' do
+      click_on 'Edit'
+
+      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Save'
+
+      #Необходима отсрочка перехода по ссылке иначе иногда данные не успевают сохраниться в базе и тест падает
+      wait_for_ajax
+      visit question_path(question)
+
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
+
     scenario 'edits his question with errors' do
 
       click_on 'Edit'
@@ -52,12 +64,20 @@ feature 'User can edit his question', %q{
 
     end
 
-    scenario "tries to edit other user's question" do
+    describe 'with another user and question on page' do
 
-      within(".question_title#{another_question.id}") do
-        expect(page).to have_content another_question.title
-        expect(page).to_not have_link 'Edit'
+      given!(:another_user) { create :user }
+      given!(:another_question) { create(:question, author: another_user) }
+
+      scenario "tries to edit other user's question" do
+        visit questions_path
+        within(".question_title#{another_question.id}") do
+          expect(page).to have_content another_question.title
+          expect(page).to_not have_link 'Edit'
+        end
       end
+
     end
+
   end
 end

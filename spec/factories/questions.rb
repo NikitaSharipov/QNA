@@ -6,5 +6,10 @@ FactoryBot.define do
     trait :invalid do
       title { nil }
     end
+
+    trait :with_file do
+      files { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'rails_helper.rb'), 'text/plain') }
+    end
+
   end
 end
