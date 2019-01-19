@@ -44,7 +44,7 @@ feature 'User can edit his question', %q{
       click_on 'Save'
 
       #Необходима отсрочка перехода по ссылке иначе иногда данные не успевают сохраниться в базе и тест падает
-      sleep 1
+      wait_for_ajax
       visit question_path(question)
 
 
