@@ -4,6 +4,11 @@
       .best
       span> Best answer!
     = answer.body
+    .links
+      p Links:
+      ul
+        - answer.links.each do |link|
+          li= link_to link.name, link.url
     -if current_user&.author_of?(answer)
       = link_to 'Delete', answer, method: :delete, remote: true
       = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
