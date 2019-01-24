@@ -69,6 +69,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'Authenticated ' do
 
+      let(:link) { create(:link, linkable: answer) }
       let!(:another_user) { create(:user) }
       let!(:foreign_answer) { create(:answer, question: question, author: another_user) }
 
@@ -108,9 +109,13 @@ RSpec.describe AnswersController, type: :controller do
         foreign_answer.reload
         expect(foreign_answer.body).to_not eq 'new body'
       end
+
+      it 'renders shared/delete_link' do
+        put :update, params: { id: answer, answer: { links_attributes: { id: link.id, "_destroy" => true }} }, format: :js
+        expect(response).to render_template "shared/delete_link"
+      end
+
     end
-
-
   end
 
   describe 'PATCH #best' do

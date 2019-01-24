@@ -14,10 +14,7 @@ p= form_with model: question do |f|
   p Links:
   p
     = f.fields_for :links do |l|
-      p
-        = l.label :name, 'Link name'
-        = l.text_field :name
-      p
-        = l.label :url
-        = l.text_field :url
+      = render 'link_fields', f: l
+    p
+      = link_to_add_association 'add link', f, :links
   p= f.submit 'Ask'

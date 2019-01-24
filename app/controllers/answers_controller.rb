@@ -14,6 +14,12 @@ class AnswersController < ApplicationController
   def update
     answer.update(answer_params) if current_user.author_of?(answer)
     @exposed_question = answer.question
+    if answer_params[:links_attributes]
+      if answer_params[:links_attributes][:_destroy]
+        @link_id = answer_params[:links_attributes][:id]
+        render "shared/delete_link"
+      end
+    end
   end
 
   def destroy
@@ -35,7 +41,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
 
 end
