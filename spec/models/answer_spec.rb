@@ -11,8 +11,8 @@ RSpec.describe Answer, type: :model do
   end
 
   describe 'best answer' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question, author: user) }
+    let!(:user) { create(:user) }
+    let!(:question) { create(:question, author: user) }
     let(:answer) { create(:answer, question: question, author: user) }
     let(:another_answer) { create(:answer, question: question, author: user) }
 
@@ -36,6 +36,26 @@ RSpec.describe Answer, type: :model do
       it 'turn best flag on old best answer off' do
         expect(another_answer).not_to be_best
       end
+
     end
+
+
+    describe 'badge' do
+
+      let!(:badge) { create(:badge, question: question) }
+
+      it 'awards badge to author of chosen answer' do
+        answer.best!
+        expect(badge.user).to eq user
+      end
+
+      it 'awards badge to chosen answer' do
+        answer.best!
+        expect(badge.answer).to eq answer
+      end
+
+    end
+
+
   end
 end
