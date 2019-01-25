@@ -27,9 +27,9 @@ class QuestionsController < ApplicationController
   def update
     question.update(question_params) if current_user.author_of?(question)
     @exposed_question = question
-    if question_params[:links_attributes]
-      if question_params[:links_attributes][:_destroy]
-        @link_id = question_params[:links_attributes][:id]
+    if params_links_attributes
+      if params_links_attributes[:_destroy]
+        @link_id = params_links_attributes[:id]
         render "shared/delete_link"
       end
     end
@@ -49,6 +49,10 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: [:id, :name, :url, :_destroy], badge_attributes: [:title, :image])
+  end
+
+  def params_links_attributes
+    question_params[:links_attributes]
   end
 
 end

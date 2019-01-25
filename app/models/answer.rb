@@ -13,13 +13,7 @@ class Answer < ApplicationRecord
   def best!
     unless self.best?
       transaction do
-
-        if question.badge
-          question.badge.user_id = question.author_id
-          question.badge.answer_id = self.id
-          question.badge.save!
-        end
-
+        question.badge.update(user: question.author, answer: self) if question.badge
         question.best_answer&.update!(best: false)
         self.update!(best: true)
       end
