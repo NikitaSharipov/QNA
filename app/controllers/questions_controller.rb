@@ -27,12 +27,7 @@ class QuestionsController < ApplicationController
   def update
     question.update(question_params) if current_user.author_of?(question)
     @exposed_question = question
-    if params_links_attributes
-      if params_links_attributes[:_destroy]
-        @link_id = params_links_attributes[:id]
-        render "shared/delete_link"
-      end
-    end
+    view_context.delete_link params_links_attributes
   end
 
   def destroy
