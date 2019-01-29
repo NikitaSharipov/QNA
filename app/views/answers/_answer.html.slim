@@ -3,7 +3,18 @@
     -if answer.best?
       .best
       span> Best answer!
-    = answer.body
+    p Answer:  #{answer.body}
+    = if answer.links.present?
+    .links
+      p Answer links:
+      ul
+        - answer.links.each do |link|
+          div class = "link_#{link.id}"
+            li= link_to link.name, link.url
+            - if link.gist?
+              p Gist content: #{link.gist_content}
+            - if current_user&.author_of?(answer)
+              = link_to "Delete", answer_path(answer.id, answer: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
     -if current_user&.author_of?(answer)
       = link_to 'Delete', answer, method: :delete, remote: true
       = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
@@ -16,6 +27,14 @@
         p
           = f.label :files
           = f.file_field :files, multiple: true
+
+        p Links:
+        p
+          = f.fields_for :links do |l|
+            = render 'link_fields', f: l
+          p
+            = link_to_add_association 'add link', f, :links
+
         p= f.submit 'Save'
     - if answer.files.attached?
       - answer.files.each do |file|

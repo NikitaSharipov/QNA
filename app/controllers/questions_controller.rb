@@ -5,6 +5,15 @@ class QuestionsController < ApplicationController
   expose :question, scope: ->{ Question.with_attached_files }
   expose :answer, ->{ Answer.new }
 
+  def new
+    question.links.new
+    question.badge = Badge.new
+  end
+
+  def show
+    answer.links.new
+  end
+
   def create
     question.author = current_user
 
@@ -18,6 +27,7 @@ class QuestionsController < ApplicationController
   def update
     question.update(question_params) if current_user.author_of?(question)
     @exposed_question = question
+    view_context.delete_link params_links_attributes
   end
 
   def destroy
@@ -33,7 +43,11 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, files: [], links_attributes: [:id, :name, :url, :_destroy], badge_attributes: [:title, :image])
+  end
+
+  def params_links_attributes
+    question_params[:links_attributes]
   end
 
 end

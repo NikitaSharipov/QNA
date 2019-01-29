@@ -10,4 +10,22 @@ p= form_with model: question do |f|
   p
     = f.label :files
     = f.file_field :files, multiple: true
+
+  p Links:
+  p
+    = f.fields_for :links do |l|
+      = render 'link_fields', f: l
+    p
+      = link_to_add_association 'add link', f, :links
+
+  p Badge:
+  p
+    = f.fields_for :badge do |badge|
+      p
+        = badge.label :title, 'Badge name'
+        = badge.text_field :title
+      p
+        = badge.label :image
+        = badge.file_field :image, direct_upload: true
+
   p= f.submit 'Ask'

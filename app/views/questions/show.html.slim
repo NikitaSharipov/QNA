@@ -1,5 +1,5 @@
 h1= question.title
-p= question.body
+p Question: #{question.body}
 
 - if question.files.attached?
   - question.files.each do |file|
@@ -7,6 +7,17 @@ p= question.body
       p= link_to file.filename.to_s, url_for(file)
       -if current_user&.author_of?(question)
         p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
+- if question.links.present?
+.links
+  p Question links:
+  ul
+    - question.links.each do |link|
+      div class = "link_#{link.id}"
+        li= link_to link.name, link.url
+        - if link.gist?
+          p Gist content: #{link.gist_content}
+        - if current_user&.author_of?(question)
+          = link_to "Delete", question_path(question.id, question: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
 
 .answers
   div class="answer"
@@ -21,4 +32,13 @@ p= form_with model: [question, answer], class: 'new-answer' do |f|
   p
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
+  p Links:
+  p
+    = f.fields_for :links do |l|
+      p
+        = render 'link_fields', f: l
+      p
+        = link_to_add_association 'add link', f, :links
   p= f.submit 'Answer!'
+
+= link_to 'Back', questions_path

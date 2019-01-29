@@ -33,6 +33,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+
+    let(:link) { create(:link, linkable: question) }
+
     before { login(user) }
     context 'with valid attributes' do
       it 'assigns the requested question to @question' do
@@ -69,6 +72,11 @@ RSpec.describe QuestionsController, type: :controller do
         patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
         expect(response).to render_template :update
       end
+
+      it 'renders shared/delete_link' do
+        put :update, params: { id: question, question: { links_attributes: { id: link.id, "_destroy" => true }} }, format: :js
+        expect(response).to render_template "shared/delete_link"
+      end
     end
   end
 
@@ -98,6 +106,26 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'Not Authenticated user tries deletes a question' do
       expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
+    end
+
+  end
+
+  describe 'GET #new' do
+    before do
+      login user
+      get :new
+    end
+
+    it 'assigns new link for question' do
+      expect(assigns(:exposed_question).links.first).to be_a_new(Link)
+    end
+  end
+
+  describe 'GET #show' do
+    before { get :show, params: { id: question } }
+
+    it 'assigns new link for answer' do
+      expect(assigns(:exposed_answer).links.first).to be_a_new(Link)
     end
 
   end
