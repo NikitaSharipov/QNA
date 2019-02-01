@@ -6,10 +6,10 @@ module Votable
   end
 
   def vote_up(user)
-    votes.create(user: user, value: 1)
+    votes.create(user: user, value: 1) unless user.author_of?(self)
   end
 
   def vote_down(user)
-    votes.create(user: user, value: -1)
+    votes.create(user: user, value: -1) unless user.author_of?(self)
   end
 end

@@ -13,22 +13,12 @@ RSpec.describe Question, type: :model do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
-  describe 'vote methods' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question, author: user) }
-
-    it 'create vote with value 1' do
-      question.vote_up(user)
-
-      expect(question.votes.where(user: user).first.value).to eq 1
+  describe Question do
+    it_behaves_like "Votable" do
+      let(:user) { create(:user)}
+      let(:another_user) { create :user }
+      let(:votable) { create(:question, author: user) }
     end
-
-    it 'create vote with value -1' do
-      question.vote_down(user)
-
-      expect(question.votes.where(user: user).first.value).to eq -1
-    end
-
   end
 
 end
