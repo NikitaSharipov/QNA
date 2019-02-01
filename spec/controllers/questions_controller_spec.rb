@@ -130,4 +130,29 @@ RSpec.describe QuestionsController, type: :controller do
 
   end
 
+  describe 'POST #vote_up' do
+
+    before do
+      login user
+    end
+
+    it 'create vote with value 1' do
+      question.vote_up(user)
+      expect(question.votes.where(user: user).first.value).to eq 1
+    end
+
+  end
+
+  describe 'POST #vote_down' do
+
+    before do
+      login user
+    end
+
+    it 'create vote with value -1' do
+      question.vote_up(user)
+      expect(question.votes.where(user: user).first.value).to eq 1
+    end
+
+  end
 end

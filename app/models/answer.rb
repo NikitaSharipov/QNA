@@ -5,6 +5,7 @@ class Answer < ApplicationRecord
   validates :body, presence: true
 
   has_many :links, dependent: :destroy, as: :linkable
+  has_many :votes, dependent: :destroy, as: :votable
   has_many_attached :files
   has_one :badge
 
@@ -19,4 +20,7 @@ class Answer < ApplicationRecord
       end
     end
   end
+
+
+
 end

@@ -6,4 +6,8 @@ $(document).on('turbolinks:load', function(){
        console.log(questionId);
        $('form#edit-question-' + questionId).removeClass('hidden');
    })
+
+   //$('.vote').on('ajax:success', function(e) {
+    //$('.questions').append('<p>' + 'chiko' + '</p>');
+    //    })
 });
