@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
-
   before_action :authenticate_user!
+  include Voted
 
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answer, scope: ->{ Answer.with_attached_files }
