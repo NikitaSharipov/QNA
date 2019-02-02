@@ -21,8 +21,17 @@
         .answer_vote_links
           =link_to 'Vote up', vote_up_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
           =link_to 'Vote down', vote_down_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+        .answer_vote_cancel.hidden
+          =link_to 'Cancel', cancel_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+          .answer_vote_content
       -else
-        p  Voted with value #{answer.votes.where(user_id: current_user ).first.value}
+        .answer_vote_links.hidden
+          =link_to 'Vote up', vote_up_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+          =link_to 'Vote down', vote_down_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+        .answer_vote_cancel
+          =link_to 'Cancel', cancel_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+          .answer_vote_content
+            p  Voted with value #{answer.votes.where(user_id: current_user ).first&.value}
 
     -if current_user&.author_of?(answer)
       = link_to 'Delete', answer, method: :delete, remote: true

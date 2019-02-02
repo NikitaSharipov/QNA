@@ -28,4 +28,16 @@ shared_examples_for 'Votable' do
     expect(votable.rating).to eq 1
   end
 
+  it "shouldn't vote twice" do
+    votable.vote_up(another_user)
+    votable.vote_up(another_user)
+    expect(votable.rating).to eq 1
+  end
+
+  it "should destroy vote" do
+    votable.vote_up(another_user)
+    votable.cancel(another_user)
+    expect(votable.voted?(another_user)).to eq false
+  end
+
 end

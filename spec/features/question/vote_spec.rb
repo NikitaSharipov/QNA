@@ -39,11 +39,11 @@ feature 'User can vote for the question', %q{
       expect(page).to have_content 'Cancel'
     end
 
-    scenario 'Can not twice vote for question' do
+    scenario 'Vote for question after Cancel', js: true  do
       click_on 'Vote up'
-      expect(page).to_not have_link 'Vote up'
+      click_on 'Cancel'
+      expect(page).to have_content 'Vote up'
     end
-
   end
 
 

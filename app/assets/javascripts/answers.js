@@ -3,7 +3,6 @@ $(document).on('turbolinks:load', function(){
        e.preventDefault();
        $(this).hide();
        var answerId = $(this).data('answerId');
-       console.log(answerId);
        $('form#edit-answer-' + answerId).removeClass('hidden');
    })
 
@@ -14,8 +13,17 @@ $(document).on('turbolinks:load', function(){
   $('.answer_vote_links').on('ajax:success', function(e) {
     var answerId = e.detail[0]['id'];
     var rating = e.detail[0]['rating']
-    console.log('.answer_title' + answerId)
-    $('.answer_title' + answerId + ' .answer_vote_links').html('<p>' + 'Voted with value ' + rating + '</p>');
+
+    $('.answer_title' + answerId + ' .answer_vote_links').addClass('hidden');
+    $('.answer_title' + answerId + ' .answer_vote_cancel').removeClass('hidden');
+    $('.answer_title' + answerId + ' .answer_vote_content').html('<p>' + 'Voted with value ' + rating + '</p>');
+  })
+
+  $('.answer_vote_cancel').on('ajax:success', function(e) {
+    var answerId = e.detail[0]['id'];
+    $('.answer_title' + answerId + ' .answer_vote_links').removeClass('hidden');
+    $('.answer_title' + answerId + ' .answer_vote_cancel').addClass('hidden');
+    $('.answer_title' + answerId + ' .answer_vote_content').html('');
   })
 
 });
