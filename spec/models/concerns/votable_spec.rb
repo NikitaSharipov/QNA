@@ -14,4 +14,18 @@ shared_examples_for 'Votable' do
     expect(votable.votes.where(user: user).first).to eq nil
   end
 
+  it "should show if not voted" do
+    expect(votable.voted?(user)).to eq false
+  end
+
+  it "should show if voted" do
+    votable.vote_up(another_user)
+    expect(votable.voted?(another_user)).to eq true
+  end
+
+  it "should show rating" do
+    votable.vote_up(another_user)
+    expect(votable.rating).to eq 1
+  end
+
 end

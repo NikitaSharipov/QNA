@@ -1,12 +1,16 @@
-p class="question_title#{question.id}"
+div class="question_title#{question.id}"
   = question.title
   -if current_user&.author_of?(question)
     = link_to 'Delete', question, method: :delete, class: 'btn btn-link'
     = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
   =link_to 'Show', question, class: 'btn btn-link'
   -unless current_user&.author_of?(question)
-    =link_to 'Vote up', vote_up_question_path(question), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-    =link_to 'Vote down', vote_down_question_path(question), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+    -unless question&.voted?(current_user)
+      .vote_links
+        =link_to 'Vote up', vote_up_question_path(question), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+        =link_to 'Vote down', vote_down_question_path(question), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
+    -else
+      p  Voted with value #{question.votes.where(user_id: current_user ).first.value}
 
 = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
   p
