@@ -40,4 +40,9 @@ shared_examples_for 'Votable' do
     expect(votable.voted?(another_user)).to eq false
   end
 
+  it "should show value of user's vote" do
+    votable.vote_up(another_user)
+    expect(votable.vote_value(another_user)).to eq 1
+  end
+
 end

@@ -44,6 +44,11 @@ feature 'User can vote for the question', %q{
       click_on 'Cancel'
       expect(page).to have_content 'Vote up'
     end
+
+    scenario 'show resulting rating' do
+      expect(page).to have_content 'Resulting rating: 0'
+    end
+
   end
 
 

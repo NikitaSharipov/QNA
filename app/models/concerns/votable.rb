@@ -24,4 +24,8 @@ module Votable
   def cancel(user)
     votes.find_by(user_id: user.id).destroy
   end
+
+  def vote_value(user)
+    self.votes.where(user_id: user).first&.value
+  end
 end
