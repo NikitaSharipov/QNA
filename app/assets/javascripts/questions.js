@@ -30,20 +30,3 @@ $(document).on('turbolinks:load', function(){
   })
 
 });
-
-
-
-
-/*
-    if ($('.question_title' + questionId + ' .vote_links').hasClass('hidden')) {
-      $('.question_title' + questionId + ' .vote_links').addClass('hidden');
-      $('.question_title' + questionId + ' .vote_cancel').removeClass('hidden');
-      $('.question_title' + questionId + ' .vote_content').html('<p>' + 'Voted with value ' + rating + '</p>');
-      }
-    else {
-      $('.question_title' + questionId + ' .vote_links').removeClass('hidden');
-      $('.question_title' + questionId + ' .vote_cancel').addClass('hidden');
-      $('.question_title' + questionId + ' .vote_content').html('');
-    }
-
-*/

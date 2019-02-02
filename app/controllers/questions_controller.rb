@@ -41,15 +41,6 @@ class QuestionsController < ApplicationController
     redirect_to questions_path
   end
 
-  #def vote_up
-  #  question.vote_up(current_user)
-  #  render json: question
-  #end
-
-  #def vote_down
-  #  question.vote_down(current_user)
-  #end
-
   private
 
   def question_params
