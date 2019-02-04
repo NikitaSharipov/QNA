@@ -15,25 +15,7 @@
               p Gist content: #{link.gist_content}
             - if current_user&.author_of?(answer)
               = link_to "Delete", answer_path(answer.id, answer: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
-    .rating
-      p Resulting rating: #{answer.rating}
-    -if current_user
-      -unless current_user&.author_of?(answer)
-        -unless answer&.voted?(current_user)
-          .answer_vote_links
-            =link_to 'Vote up', vote_up_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-            =link_to 'Vote down', vote_down_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-          .answer_vote_cancel.hidden
-            =link_to 'Cancel', cancel_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-            .answer_vote_content
-        -else
-          .answer_vote_links.hidden
-            =link_to 'Vote up', vote_up_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-            =link_to 'Vote down', vote_down_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-          .answer_vote_cancel
-            =link_to 'Cancel', cancel_answer_path(answer), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-            .answer_vote_content
-              p  Voted with value #{answer.votes.where(user_id: current_user ).first&.value}
+      =render partial: "/shared/rating", locals: { resource: answer }
 
     -if current_user&.author_of?(answer)
       = link_to 'Delete', answer, method: :delete, remote: true
