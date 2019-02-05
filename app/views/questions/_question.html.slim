@@ -5,7 +5,7 @@ div class="question_title#{question.id}"
     = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
   =link_to 'Show', question, class: 'btn btn-link'
 
-  =render partial: "/shared/rating", locals: { resource: question }
+  =render partial: "/shared/rating", locals: { resource: question, current_user: current_user }
 
 = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
   p
@@ -17,7 +17,7 @@ div class="question_title#{question.id}"
   p Links:
   p
     = f.fields_for :links do |l|
-      = render 'link_fields', f: l
+      = render 'shared/link_fields', f: l
     p
-      = link_to_add_association 'add link', f, :links
+      = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
   p= f.submit 'Save'

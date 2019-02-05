@@ -1,6 +1,9 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
   include Voted
+
+  before_action :authenticate_user!, except: [:index, :show]
+
+  after_action :publish_question, only: [:create]
 
   expose :questions, ->{ Question.all }
   expose :question, scope: ->{ Question.with_attached_files }
@@ -49,6 +52,17 @@ class QuestionsController < ApplicationController
 
   def params_links_attributes
     question_params[:links_attributes]
+  end
+
+  def publish_question
+    return if question.errors.any?
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: question, current_user: current_user }
+      )
+    )
   end
 
 end

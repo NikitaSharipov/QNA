@@ -33,9 +33,9 @@
         p Links:
         p
           = f.fields_for :links do |l|
-            = render 'link_fields', f: l
+            = render 'shared/link_fields', f: l
           p
-            = link_to_add_association 'add link', f, :links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
         p= f.submit 'Save'
     - if answer.files.attached?

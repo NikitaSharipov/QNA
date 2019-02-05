@@ -36,9 +36,9 @@ p= form_with model: [question, answer], class: 'new-answer' do |f|
   p
     = f.fields_for :links do |l|
       p
-        = render 'link_fields', f: l
+        = render 'shared/link_fields', f: l
       p
-        = link_to_add_association 'add link', f, :links
+        = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
   p= f.submit 'Answer!'
 
 = link_to 'Back', questions_path

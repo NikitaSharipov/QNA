@@ -20,4 +20,6 @@ Rails.application.routes.draw do
   resources :badges, only: :index
 
   root to: "questions#index"
+
+  mount ActionCable.server => '/cable'
 end
