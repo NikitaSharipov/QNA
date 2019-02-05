@@ -56,6 +56,15 @@ RSpec.describe Answer, type: :model do
 
     end
 
+    describe Answer do
+      it_behaves_like "Votable" do
+        let(:user) { create(:user)}
+        let(:another_user) { create :user }
+        let(:question) { create(:question, author: user) }
+        let(:votable) { create(:answer, question: question, author: user) }
+      end
+    end
+
 
   end
 end

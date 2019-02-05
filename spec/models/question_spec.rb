@@ -13,4 +13,12 @@ RSpec.describe Question, type: :model do
     expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
+  describe Question do
+    it_behaves_like "Votable" do
+      let(:user) { create(:user)}
+      let(:another_user) { create :user }
+      let(:votable) { create(:question, author: user) }
+    end
+  end
+
 end

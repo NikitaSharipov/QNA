@@ -1,9 +1,11 @@
-p class="question_title#{question.id}"
+div class="question_title#{question.id}"
   = question.title
   -if current_user&.author_of?(question)
     = link_to 'Delete', question, method: :delete, class: 'btn btn-link'
     = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
   =link_to 'Show', question, class: 'btn btn-link'
+
+  =render partial: "/shared/rating", locals: { resource: question }
 
 = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
   p

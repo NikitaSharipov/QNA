@@ -15,6 +15,8 @@
               p Gist content: #{link.gist_content}
             - if current_user&.author_of?(answer)
               = link_to "Delete", answer_path(answer.id, answer: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
+      =render partial: "/shared/rating", locals: { resource: answer }
+
     -if current_user&.author_of?(answer)
       = link_to 'Delete', answer, method: :delete, remote: true
       = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

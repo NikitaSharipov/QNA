@@ -1,4 +1,6 @@
 class Question < ApplicationRecord
+  include Votable
+
   belongs_to :author, class_name: 'User'
 
   has_many :answers, dependent: :destroy
@@ -14,4 +16,5 @@ class Question < ApplicationRecord
   def best_answer
     self.answers.where(best: true).first
   end
+
 end
