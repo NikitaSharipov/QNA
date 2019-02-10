@@ -1,7 +1,7 @@
 div class="answer_title#{@answer.id}"
   p Answer:  #{@answer.body}
 
-  -if @answer_links != 0
+  -if @answer_links.length != 0
     .links
       p Answer links:
       ul
@@ -13,7 +13,7 @@ div class="answer_title#{@answer.id}"
               p Gist content: #{link.gist_content}
   .rating
     p Resulting rating: 0
-  -if gon.user
+  -if gon.user_id
     .vote_links
       a href="/answers/#{@answer.id}/vote_up" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Vote up
       a href="/answers/#{@answer.id}/vote_down" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Vote down

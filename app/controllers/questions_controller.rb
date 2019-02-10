@@ -57,18 +57,12 @@ class QuestionsController < ApplicationController
 
   def publish_question
     return if question.errors.any?
-    ActionCable.server.broadcast(
-      'questions',
-      ApplicationController.render(
-        partial: 'questions/question',
-        locals: { question: question, current_user: current_user }
-      )
-    )
+    ActionCable.server.broadcast "questions", question: question.as_json
   end
 
   def gon_question
     gon.questionID = question.id if question
-    gon.user = current_user if current_user
+    gon.user_id = current_user.id if current_user
   end
 
 end

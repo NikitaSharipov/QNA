@@ -11,18 +11,22 @@ $(document).on('turbolinks:load', function(){
 
   rating('.answer');
 
-  App.cable.subscriptions.create({channel: 'AnswersChannel', question_id: gon.questionID}, {
-    connected: function() {
-      this.perform('follow');
-    },
+  if (gon.questionID) {
 
-    received: function(data) {
-      console.log(data);
-      if (gon.user.id !== data.answer.author_id) {
-        $(".answers").append(JST["templates/answer"]({answer: data.answer, answer_links: data.answer_links, answer_files: data.answer_files}));
+    App.cable.subscriptions.create({channel: 'AnswersChannel', question_id: gon.questionID}, {
+      connected: function() {
+        this.perform('follow');
+      },
+
+      received: function(data) {
+        console.log(gon.user_id)
+        if (gon.user_id != data.answer.author_id) {
+          $(".answers").append(JST["templates/answer"]({answer: data.answer, answer_links: data.answer_links, answer_files: data.answer_files}));
+        }
       }
-    }
-  });
+    });
+
+  }
 
 });
 

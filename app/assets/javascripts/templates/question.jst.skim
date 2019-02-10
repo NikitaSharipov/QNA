@@ -1,0 +1,13 @@
+div class="question_title#{@question.id}"
+  =@question.title
+  a href="/questions/#{@question.id}" class='btn btn-link' Show
+
+  .rating
+    p Resulting rating: 0
+  -if gon.user_id
+    .vote_links
+      a href="/questions/#{@question.id}/vote_up" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Vote up
+      a href="/questions/#{@question.id}/vote_down" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Vote down
+    .vote_cancel.hidden
+      a href="/questions/#{@question.id}/cancel" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Cancel
+    .vote_content
