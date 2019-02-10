@@ -2,6 +2,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :gon_question
 
   after_action :publish_question, only: [:create]
 
@@ -63,6 +64,11 @@ class QuestionsController < ApplicationController
         locals: { question: question, current_user: current_user }
       )
     )
+  end
+
+  def gon_question
+    gon.questionID = question.id if question
+    gon.user = current_user if current_user
   end
 
 end

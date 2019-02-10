@@ -6,9 +6,25 @@ $(document).on('turbolinks:load', function(){
        $('form#edit-answer-' + answerId).removeClass('hidden');
    })
 
-  var x = $('.best').parent()
+  var x = $('.best').parent();
   x.insertAfter(".answer");
 
-  rating('.answer')
+  rating('.answer');
+
+  App.cable.subscriptions.create({channel: 'AnswersChannel', question_id: gon.questionID}, {
+    connected: function() {
+      this.perform('follow');
+    },
+
+    received: function(data) {
+      console.log(data);
+      if (gon.user.id !== data.answer.author_id) {
+        $(".answers").append(JST["templates/answer"]({answer: data.answer, answer_links: data.answer_links, answer_files: data.answer_files}));
+      }
+    }
+  });
 
 });
+
+
+

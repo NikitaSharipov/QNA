@@ -1,5 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
+  after_action :publish_answer, only: [:create]
+  #  before_action :gon_answer
   include Voted
 
   expose :question, -> { Question.find(params[:question_id]) }
@@ -9,6 +11,8 @@ class AnswersController < ApplicationController
     @exposed_answer = question.answers.new(answer_params)
     answer.author = current_user
     answer.save
+
+    gon.questionID = question.id
   end
 
   def update
@@ -42,5 +46,21 @@ class AnswersController < ApplicationController
   def params_links_attributes
     answer_params[:links_attributes]
   end
+
+  def publish_answer
+    return if answer.errors.any?
+
+    answer_files = []
+    answer.files.map do |file|
+      answer_files << { url: url_for(file), name: file.filename.to_s }
+    end
+
+    ActionCable.server.broadcast "questions/#{question.id}", { answer: answer.as_json, answer_links: answer.links, answer_files: answer_files }
+  end
+
+  #  def gon_answer
+  #    gon.answer = answer if answer
+  #    gon.user_id = current_user if current_user
+  #  end
 
 end
