@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :answers, foreign_key: :author_id, dependent: :nullify
   has_many :badges
   has_many :votes
+  has_many :comments
 
   def author_of?(thing)
     id == thing.author_id

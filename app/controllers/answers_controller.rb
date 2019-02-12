@@ -3,6 +3,7 @@ class AnswersController < ApplicationController
   after_action :publish_answer, only: [:create]
   #  before_action :gon_answer
   include Voted
+  include Commented
 
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answer, scope: ->{ Answer.with_attached_files }
@@ -40,7 +41,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
+    params.require(:answer).permit(:body, :comment_body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
 
   def params_links_attributes

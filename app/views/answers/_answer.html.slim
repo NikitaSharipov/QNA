@@ -45,3 +45,15 @@
           -if current_user&.author_of?(answer)
             p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
 
+    = form_with model: answer, :url => create_comment_answer_path(answer) do |f|
+      p
+        = f.label :comment_body, 'Your comment'
+        = f.text_area :comment_body
+
+      p= f.submit 'Comment!'
+
+    p Comments:
+    div class="comments for answer_#{answer.id}"
+      = render 'shared/comments', resource: answer
+
+

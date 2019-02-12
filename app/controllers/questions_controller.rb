@@ -1,5 +1,7 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
+
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :gon_question
@@ -48,7 +50,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [], links_attributes: [:id, :name, :url, :_destroy], badge_attributes: [:title, :image])
+    params.require(:question).permit(:title, :body, :comment_body, files: [], links_attributes: [:id, :name, :url, :_destroy], badge_attributes: [:title, :image])
   end
 
   def params_links_attributes

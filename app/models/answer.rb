@@ -1,5 +1,6 @@
 class Answer < ApplicationRecord
   include Votable
+  include Commentable
 
   belongs_to :author, class_name: 'User'
   belongs_to :question
@@ -8,6 +9,7 @@ class Answer < ApplicationRecord
 
   has_many :links, dependent: :destroy, as: :linkable
   has_many :votes, dependent: :destroy, as: :votable
+  #has_many :comments, dependent: :destroy, as: :commentable
   has_many_attached :files
   has_one :badge
 
