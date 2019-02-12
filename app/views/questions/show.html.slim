@@ -1,6 +1,18 @@
 h1= question.title
 p Question: #{question.body}
 
+p Question comments:
+div class="comments_question_#{question.id}"
+  = render 'shared/comments', resource: question
+
+= form_with model: question, :url => create_comment_question_path(question) do |f|
+  p
+    = f.label :comment_body, 'Your question comment'
+    = f.text_area :comment_body
+
+  p= f.submit 'Question comment!'
+
+
 - if question.files.attached?
   - question.files.each do |file|
     div class = "file_#{file.id}"

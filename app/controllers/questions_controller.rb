@@ -7,6 +7,7 @@ class QuestionsController < ApplicationController
   before_action :gon_question
 
   after_action :publish_question, only: [:create]
+  after_action :publish_comment, only: [:create_comment]
 
   expose :questions, ->{ Question.all }
   expose :question, scope: ->{ Question.with_attached_files }
@@ -65,6 +66,10 @@ class QuestionsController < ApplicationController
   def gon_question
     gon.questionID = question.id if question
     gon.user_id = current_user.id if current_user
+  end
+
+  def publish_comment
+    ActionCable.server.broadcast "question_comments/#{question.id}", question_comment: question.comments.last.as_json, question_id: question.id
   end
 
 end

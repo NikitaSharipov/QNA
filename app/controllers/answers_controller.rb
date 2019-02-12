@@ -1,7 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   after_action :publish_answer, only: [:create]
-  #  before_action :gon_answer
   include Voted
   include Commented
 
@@ -58,10 +57,5 @@ class AnswersController < ApplicationController
 
     ActionCable.server.broadcast "questions/#{question.id}", { answer: answer.as_json, answer_links: answer.links, answer_files: answer_files }
   end
-
-  #  def gon_answer
-  #    gon.answer = answer if answer
-  #    gon.user_id = current_user if current_user
-  #  end
 
 end

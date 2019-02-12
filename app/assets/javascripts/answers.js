@@ -26,6 +26,17 @@ $(document).on('turbolinks:load', function(){
       }
     });
 
+    App.cable.subscriptions.create({channel: 'CommentsChannel', question_id: gon.questionID}, {
+      connected: function() {
+        this.perform('follow');
+      },
+
+      received: function(data) {
+        console.log('data')
+        $(".comments_question_" + data.question_id).append(JST["templates/comment"]({question_comment: data.question_comment}));
+      }
+    });
+
   }
 
 });
