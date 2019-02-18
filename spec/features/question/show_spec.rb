@@ -22,4 +22,12 @@ feature 'User can view the question and answers to it', %q{
       expect(page).to have_content a.body
     end
   end
+
+  scenario 'Create comment' do
+    sign_in(user)
+    visit question_path(question)
+    fill_in 'Your question comment', with: 'text'
+    click_on 'Question comment!'
+    expect(page).to have_content 'text'
+  end
 end

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
+  it { should have_many( :comments).dependent(:destroy)}
 
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
@@ -19,6 +20,10 @@ RSpec.describe Question, type: :model do
       let(:another_user) { create :user }
       let(:votable) { create(:question, author: user) }
     end
-  end
 
+    it_behaves_like "Commentable" do
+      let(:user) { create(:user)}
+      let(:commentable) { create(:question, author: user)}
+    end
+  end
 end

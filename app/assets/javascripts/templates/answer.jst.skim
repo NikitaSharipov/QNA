@@ -1,0 +1,32 @@
+div class="answer_title#{@answer.id}"
+  p Answer:  #{@answer.body}
+
+  -if @answer_links.length != 0
+    .links
+      p Answer links:
+      ul
+        - for link in @answer_links
+          div class = "link_#{link.id}"
+            li
+              a href="#{link.url}" #{link.name}
+            - if link.gist?
+              p Gist content: #{link.gist_content}
+  .rating
+    p Resulting rating: 0
+  -if gon.user_id
+    .vote_links
+      a href="/answers/#{@answer.id}/vote_up" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Vote up
+      a href="/answers/#{@answer.id}/vote_down" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Vote down
+    .vote_cancel.hidden
+      a href="/answers/#{@answer.id}/cancel" class='vote btn btn-link' data-remote='true' data-method='post' data-type='json' Cancel
+    .vote_content
+
+  -if @answer_files.length != 0
+    - for file in @answer_files
+      div class = "file"
+        p
+          a href="#{file.url}" #{file.name}
+
+
+
+

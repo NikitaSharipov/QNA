@@ -1,6 +1,8 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
+  after_action :publish_answer, only: [:create]
   include Voted
+  include Commented
 
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answer, scope: ->{ Answer.with_attached_files }
@@ -9,6 +11,8 @@ class AnswersController < ApplicationController
     @exposed_answer = question.answers.new(answer_params)
     answer.author = current_user
     answer.save
+
+    gon.questionID = question.id
   end
 
   def update
@@ -36,11 +40,22 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:id, :name, :url, :_destroy])
+    params.require(:answer).permit(:body, :comment_body, files: [], links_attributes: [:id, :name, :url, :_destroy])
   end
 
   def params_links_attributes
     answer_params[:links_attributes]
+  end
+
+  def publish_answer
+    return if answer.errors.any?
+
+    answer_files = []
+    answer.files.map do |file|
+      answer_files << { url: url_for(file), name: file.filename.to_s }
+    end
+
+    ActionCable.server.broadcast "questions/#{question.id}", { answer: answer.as_json, answer_links: answer.links, answer_files: answer_files }
   end
 
 end

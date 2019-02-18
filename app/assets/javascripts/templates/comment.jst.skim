@@ -1,0 +1,3 @@
+.single_comment
+  p= @question_comment.body
+

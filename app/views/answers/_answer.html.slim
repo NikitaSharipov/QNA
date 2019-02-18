@@ -4,18 +4,18 @@
       .best
       span> Best answer!
     p Answer:  #{answer.body}
-    = if answer.links.present?
-    .links
-      p Answer links:
-      ul
-        - answer.links.each do |link|
-          div class = "link_#{link.id}"
-            li= link_to link.name, link.url
-            - if link.gist?
-              p Gist content: #{link.gist_content}
-            - if current_user&.author_of?(answer)
-              = link_to "Delete", answer_path(answer.id, answer: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
-      =render partial: "/shared/rating", locals: { resource: answer }
+    - if answer.links.present?
+      .links
+        p Answer links:
+        ul
+          - answer.links.each do |link|
+            div class = "link_#{link.id}"
+              li= link_to link.name, link.url
+              - if link.gist?
+                p Gist content: #{link.gist_content}
+              - if current_user&.author_of?(answer)
+                = link_to "Delete", answer_path(answer.id, answer: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
+    =render partial: "/shared/rating", locals: { resource: answer }
 
     -if current_user&.author_of?(answer)
       = link_to 'Delete', answer, method: :delete, remote: true
@@ -33,9 +33,9 @@
         p Links:
         p
           = f.fields_for :links do |l|
-            = render 'link_fields', f: l
+            = render 'shared/link_fields', f: l
           p
-            = link_to_add_association 'add link', f, :links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
         p= f.submit 'Save'
     - if answer.files.attached?
@@ -44,4 +44,16 @@
           p= link_to file.filename.to_s, url_for(file)
           -if current_user&.author_of?(answer)
             p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
+
+    = form_with model: answer, :url => create_comment_answer_path(answer) do |f|
+      p
+        = f.label :comment_body, 'Your comment'
+        = f.text_area :comment_body
+
+      p= f.submit 'Comment!'
+
+    p Comments:
+    div class="comments for answer_#{answer.id}"
+      = render 'shared/comments', resource: answer
+
 

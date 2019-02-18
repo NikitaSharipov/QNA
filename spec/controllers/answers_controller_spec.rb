@@ -149,7 +149,12 @@ RSpec.describe AnswersController, type: :controller do
     let(:another_user) { create :user }
     let(:question) { create(:question, author: another_user) }
     let(:votable) { create(:answer, question: question, author: another_user) }
+  end
 
+  it_behaves_like 'Commented' do
+    let(:user) { create :user }
+    let(:question) { create(:question, author: user) }
+    let(:commented) { create(:answer, question: question, author: user) }
   end
 
 end

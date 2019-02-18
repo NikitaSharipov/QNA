@@ -1,6 +1,6 @@
    function rating(resource_name) {
 
-     $('.vote_links').on('ajax:success', function(e) {
+     $(resource_name + 's').on('ajax:success', ".vote_links", function(e) {
       var Id = e.detail[0]['id'];
       var rating = e.detail[0]['rating'];
       var voteValue = e.detail[0]['vote_value'];
@@ -13,7 +13,7 @@
 
     })
 
-    $('.vote_cancel').on('ajax:success', function(e) {
+     $(resource_name + 's').on('ajax:success', ".vote_cancel", function(e) {
       var Id = e.detail[0]['id'];
       var rating = e.detail[0]['rating'];
       $(resource_name + '_title' + Id + ' .vote_links').removeClass('hidden');
@@ -23,4 +23,4 @@
       $(resource_name + '_title' + Id + ' .rating').html('<p>' + 'Resulting rating: ' + rating + '</p>');
     })
 
-}
+};

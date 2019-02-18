@@ -1,6 +1,18 @@
 h1= question.title
 p Question: #{question.body}
 
+p Question comments:
+div class="comments_question_#{question.id}"
+  = render 'shared/comments', resource: question
+
+= form_with model: question, :url => create_comment_question_path(question) do |f|
+  p
+    = f.label :comment_body, 'Your question comment'
+    = f.text_area :comment_body
+
+  p= f.submit 'Question comment!'
+
+
 - if question.files.attached?
   - question.files.each do |file|
     div class = "file_#{file.id}"
@@ -36,9 +48,9 @@ p= form_with model: [question, answer], class: 'new-answer' do |f|
   p
     = f.fields_for :links do |l|
       p
-        = render 'link_fields', f: l
+        = render 'shared/link_fields', f: l
       p
-        = link_to_add_association 'add link', f, :links
+        = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
   p= f.submit 'Answer!'
 
 = link_to 'Back', questions_path

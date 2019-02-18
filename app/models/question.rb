@@ -1,10 +1,12 @@
 class Question < ApplicationRecord
   include Votable
+  include Commentable
 
   belongs_to :author, class_name: 'User'
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
+  #has_many :comments, dependent: :destroy, as: :commentable
   has_many_attached :files
   has_one :badge
 

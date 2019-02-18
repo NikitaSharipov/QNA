@@ -8,12 +8,12 @@
         =link_to 'Vote down', polymorphic_path([:vote_down, resource]), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
       .vote_cancel.hidden
         =link_to 'Cancel', polymorphic_path([:cancel, resource]), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-        .vote_content
+      .vote_content
     -else
       .vote_links.hidden
         =link_to 'Vote up', polymorphic_path([:vote_up, resource]), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
         =link_to 'Vote down', polymorphic_path([:vote_down, resource]), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
       .vote_cancel
         =link_to 'Cancel', polymorphic_path([:cancel, resource]), method: :post, data: { type: 'json' }, remote: true, class: 'vote btn btn-link'
-        .vote_content
-          p  Voted with value #{resource.votes.where(user_id: current_user ).first&.value}
+      .vote_content
+        p  Voted with value #{resource.votes.where(user_id: current_user ).first&.value}
