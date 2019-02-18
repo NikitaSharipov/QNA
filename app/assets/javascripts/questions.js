@@ -21,18 +21,5 @@ $(document).on('turbolinks:load', function(){
     }
   });
 
-  App.cable.subscriptions.create({channel: 'QuestionsChannel'}, {
-    connected: function() {
-      this.perform('follow');
-    },
-
-    received: function(data) {
-      console.log(data);
-      if (gon.user_id != data.question.author_id) {
-        $(".questions").append(JST["templates/question"]({question: data.question}));
-      }
-    }
-  });
-
 });
 
