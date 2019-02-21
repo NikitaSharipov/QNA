@@ -1,15 +1,16 @@
 class Services::FindForOauth
   attr_reader :auth
 
-  def initialize(auth)
+  def initialize(auth, email)
     @auth = auth
+    @email = email
   end
 
   def call
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
-    email = auth.info[:email]
+    email = @email || auth.info[:email]
     user = User.where(email: email).first
     if user
       user.create_authorization(auth)

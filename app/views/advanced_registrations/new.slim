@@ -1,0 +1,7 @@
+p= 'Введиите email'
+
+= form_with url: advanced_registrations_path, method: "post" do |f|
+  p
+    = f.label :email
+    = f.text_field :email
+  p= f.submit 'Send confirmation instructions'

@@ -36,6 +36,8 @@ gem 'validate_url'
 gem "octokit", "~> 4.0"
 gem 'skim'
 gem 'gon'
+gem 'letter_opener'
+gem 'capybara-email'
 
 gem 'omniauth'
 gem 'omniauth-github'

@@ -6,12 +6,13 @@ RSpec.describe OauthCallbacksController, type: :controller do
   end
 
   describe 'Github' do
-    let(:oauth_data) { {'provider' => 'github', 'uid' => 123 } }
+    let(:oauth_data) { {'provider' => 'github', 'uid' => 123, 'info'=> {'email' => 'email@email.ru'} } }
+    let(:email) { 'email@email.ru' }
 
     it 'finds user from oauth data' do
       allow(request.env).to receive(:[]).and_call_original
       allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
-      expect(User).to receive(:find_for_oauth).with(oauth_data)
+      expect(User).to receive(:find_for_oauth).with(oauth_data, email)
       get :github
     end
 
@@ -48,16 +49,18 @@ RSpec.describe OauthCallbacksController, type: :controller do
         expect(subject.current_user).to_not be
       end
     end
-
   end
 
+
+
   describe 'Facebook' do
-    let(:oauth_data) { {'provider' => 'Facebook', 'uid' => 123 } }
+    let(:oauth_data) { {'provider' => 'Facebook', 'uid' => 123, 'info'=> {'email' => 'example@mail.com', 'name' => 'name'} } }
+    let(:email) { nil }
 
     it 'finds user from oauth data' do
       allow(request.env).to receive(:[]).and_call_original
       allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
-      expect(User).to receive(:find_for_oauth).with(oauth_data)
+      expect(User).to receive(:find_for_oauth).with(oauth_data, email)
       get :facebook
     end
 
@@ -85,8 +88,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
         get :facebook
       end
 
-      it 'redirects to root path' do
-        expect(response).to redirect_to root_path
+      it 'redirects to email confirmation path' do
+        expect(response).to redirect_to new_advanced_registration_path
       end
 
 

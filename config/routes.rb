@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   resources :badges, only: :index
 
+  resources :advanced_registrations, only: [:new, :create]
+
   root to: "questions#index"
 
   mount ActionCable.server => '/cable'
