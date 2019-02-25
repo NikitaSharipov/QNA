@@ -19,7 +19,12 @@ feature 'User can sign up', %q{
 
     click_button 'Sign up'
 
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+    expect(page).to have_content 'A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.'
+
+    open_email('test@user')
+    current_email.click_link 'Confirm my account'
+
+    expect(page).to have_content 'Your email address has been successfully confirmed.'
   end
 
   scenario 'Registered user tries to sign up' do

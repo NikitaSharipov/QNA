@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   resources :questions, concerns: [:votable, :commentable] do
     resources :answers, concerns: [:votable, :commentable], shallow: true do
       post :best, on: :member
@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   resources :attachments, only: :destroy
 
   resources :badges, only: :index
+
+  resources :advanced_registrations, only: [:new, :create]
 
   root to: "questions#index"
 

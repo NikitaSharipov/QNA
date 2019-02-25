@@ -1,0 +1,2 @@
+module AdvancedRegistrationsHelper
+end
