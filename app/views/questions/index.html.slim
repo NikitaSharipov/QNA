@@ -3,6 +3,7 @@
 
 .question-errors
   = render 'shared/errors', resource: question
-p= link_to 'Ask question', new_question_path, class: 'btn btn-link'
+-if can?(:create, Question)
+  p= link_to 'Ask question', new_question_path, class: 'btn btn-link'
 
 p= link_to 'Watch your badges', badges_path, class: 'btn btn-link'

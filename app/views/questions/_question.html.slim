@@ -1,7 +1,8 @@
 div class="question_title#{question.id}"
   = question.title
-  -if current_user&.author_of?(question)
+  -if can?(:destroy, question)
     = link_to 'Delete', question, method: :delete, class: 'btn btn-link'
+  -if can?(:update, question)
     = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
   =link_to 'Show', question, class: 'btn btn-link'
 
@@ -22,12 +23,13 @@ div class="question_title#{question.id}"
         = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
     p= f.submit 'Save'
 
-  = form_with model: question, :url => create_comment_question_path(question) do |f|
-    p
-      = f.label :comment_body, 'Your comment'
-      = f.text_area :comment_body
+  -if can?(:create_comment, question)
+    = form_with model: question, :url => create_comment_question_path(question) do |f|
+      p
+        = f.label :comment_body, 'Your comment'
+        = f.text_area :comment_body
 
-    p= f.submit 'Comment!'
+      p= f.submit 'Comment!'
 
 
 
