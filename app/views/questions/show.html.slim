@@ -21,16 +21,16 @@ div class="comments_question_#{question.id}"
       -if current_user&.author_of?(question)
         p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
 - if question.links.present?
-.links
-  p Question links:
-  ul
-    - question.links.each do |link|
-      div class = "link_#{link.id}"
-        li= link_to link.name, link.url
-        - if link.gist?
-          p Gist content: #{link.gist_content}
-        - if current_user&.author_of?(question)
-          = link_to "Delete", question_path(question.id, question: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
+  .links
+    p Question links:
+    ul
+      - question.links.each do |link|
+        div class = "link_#{link.id}"
+          li= link_to link.name, link.url
+          - if link.gist?
+            p Gist content: #{link.gist_content}
+          - if current_user&.author_of?(question)
+            = link_to "Delete", question_path(question.id, question: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
 
 .answers
   div class="answer"
