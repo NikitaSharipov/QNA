@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  use_doorkeeper
   concern :votable do
     member do
       patch :create_comment
@@ -28,6 +29,16 @@ Rails.application.routes.draw do
   resources :badges, only: :index
 
   resources :advanced_registrations, only: [:new, :create]
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: [:index]
+    end
+  end
 
   root to: "questions#index"
 
