@@ -44,9 +44,7 @@ feature 'User can answer the question', %q{
 
   scenario 'Unauthenticated user tries to answer a question' do
     visit question_path(question)
-    click_on 'Answer!'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_content 'Answer!'
   end
 
   context "multiply answers", js: true  do

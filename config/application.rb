@@ -17,6 +17,7 @@ module Qna
     # the framework and any gems in your application.
 
     config.autoload_paths += [config.root.join('app')]
+    #config.autoload_paths += %W(#{config.root}/app/services)
 
     config.generators do |g|
       g.test_framework :rspec, view_specs: false, helper_specs: false, routing_specs: false, request_specs: false

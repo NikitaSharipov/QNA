@@ -11,7 +11,10 @@
 
       $(resource_name + '_title' + Id + ' .rating').html('<p>' + 'Resulting rating: ' + rating + '</p>');
 
-    })
+    }).on('ajax:error', '.vote', function (e) {
+      var error = e.detail[0];
+      $('.notice').html(error);
+    });
 
      $(resource_name + 's').on('ajax:success', ".vote_cancel", function(e) {
       var Id = e.detail[0]['id'];

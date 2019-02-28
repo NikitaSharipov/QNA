@@ -39,6 +39,11 @@ $(document).on('turbolinks:load', function(){
 
   }
 
+    $('.answers').on('ajax:error', function(e) {
+      let errors = e.detail[0];
+      $('.notice').html(errors);
+  });
+
 });
 
 

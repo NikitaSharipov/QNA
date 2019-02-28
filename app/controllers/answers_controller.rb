@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   expose :question, -> { Question.find(params[:question_id]) }
   expose :answer, scope: ->{ Answer.with_attached_files }
 
+  authorize_resource
+
   def create
     @exposed_answer = question.answers.new(answer_params)
     answer.author = current_user

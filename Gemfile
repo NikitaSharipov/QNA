@@ -38,6 +38,7 @@ gem 'skim'
 gem 'gon'
 gem 'letter_opener'
 gem 'capybara-email'
+gem 'cancancan'
 
 gem 'omniauth'
 gem 'omniauth-github'
