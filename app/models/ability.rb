@@ -39,5 +39,6 @@ class Ability
     can :manage, ActiveStorage::Attachment do |attachment|
       user.author_of?(attachment.record)
     end
+    can :me, User, id: user.id
   end
 end

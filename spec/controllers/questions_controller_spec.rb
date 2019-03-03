@@ -9,9 +9,8 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     before { login(user) }
     context 'with valid attributes' do
-      it 'saves a new question in the database' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
-      end
+
+      it_behaves_like 'To save a new object', let(:params) { { question: attributes_for(:question) } }, let(:object_class) { Question }, let(:object) { 'question' }
 
       it 'redirects to show view' do
         post :create, params: { question: attributes_for(:question) }
@@ -20,10 +19,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
-      end
-
+      it_behaves_like 'does not save a new object', let(:params) { { question: attributes_for(:question, :invalid) } }, let(:object_class) { Question }
 
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
@@ -38,18 +34,9 @@ RSpec.describe QuestionsController, type: :controller do
 
     before { login(user) }
     context 'with valid attributes' do
-      it 'assigns the requested question to @question' do
-        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
-        expect(assigns(:exposed_question)).to eq question
-      end
 
-      it 'changes question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
-        question.reload
-
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
-      end
+      it_behaves_like 'To update the object', let(:params) { { question: attributes_for(:question) } }, let(:object) { question }
+      it_behaves_like 'To change the object attributes', let(:params) { { question: { title: 'new_title', body: 'new_body' } } }, let(:object) { question }
 
       it 'redirects to updated question' do
         patch :update, params: { id: question, question: attributes_for(:question), format: :js }
@@ -68,10 +55,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq old_params[:body]
       end
 
-      it 're-renders edit view' do
-        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
-        expect(response).to render_template :update
-      end
+      it_behaves_like 'To render update view', let(:params) { { question: attributes_for(:question, :invalid) } }, let(:object) { question }
 
       it 'renders shared/delete_link' do
         put :update, params: { id: question, question: { links_attributes: { id: link.id, "_destroy" => true }} }, format: :js
@@ -90,9 +74,7 @@ RSpec.describe QuestionsController, type: :controller do
       let!(:another_user) { create(:user) }
       let!(:foreign_question) { create(:question, author: another_user) }
 
-      it 'deletes his question' do
-        expect { delete :destroy, params: { id: question } }.to change(user.questions, :count).by(-1)
-      end
+      it_behaves_like 'To delete the object', let(:object) { question }, let(:object_class) { Question }
 
       it 'deletes not his question' do
         expect { delete :destroy, params: { id: foreign_question } }.not_to change(Question, :count)
