@@ -8,6 +8,13 @@ div class="question_title#{question.id}"
 
   =render partial: "/shared/rating", locals: { resource: question, current_user: current_user }
 
+  - if can?(:create, Subscription)
+    .subscribe
+      - if current_user&.subscribed_to(question)
+        = link_to 'cancel subscription', subscription_path(current_user.subscribed_to(question)), remote: true, method: :delete
+      - else
+        = link_to 'subscribe!', question_subscriptions_path(question), remote: true, method: :post
+
   = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
     p
       = f.label :title, 'Your question title'

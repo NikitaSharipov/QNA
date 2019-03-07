@@ -36,4 +36,13 @@ RSpec.describe Question, type: :model do
       question.save!
     end
   end
+
+  describe '#subscribers' do
+    let(:user) { create(:user)}
+    let(:question) { create(:question, author: user)}
+
+    it 'should get array of users' do
+      expect(question.subscribers).to eq [user]
+    end
+  end
 end

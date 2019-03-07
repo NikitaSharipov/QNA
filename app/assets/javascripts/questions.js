@@ -28,6 +28,5 @@ $(document).on('turbolinks:load', function(){
       $('.notice').html(errors);
   });
 
-
 });
 

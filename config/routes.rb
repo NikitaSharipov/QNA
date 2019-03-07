@@ -24,8 +24,9 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
-  resources :questions, concerns: [:votable, :commentable] do
-    resources :answers, concerns: [:votable, :commentable], shallow: true do
+  resources :questions, concerns: [:votable, :commentable], shallow: true do
+    resources :subscriptions, only: [:create, :destroy]
+    resources :answers, concerns: [:votable, :commentable] do
       post :best, on: :member
     end
   end

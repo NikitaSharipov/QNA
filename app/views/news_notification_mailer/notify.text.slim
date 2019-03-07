@@ -1,0 +1,8 @@
+' Question you subscribed get new answer
+= "\r\n" * 2
+' New answer:
+= "\r\n" * 2
+- @answer.body
+  = "\r\n"
+
+' Link to Question #{ question_url(@answer.question) }
