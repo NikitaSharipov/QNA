@@ -32,6 +32,7 @@ RSpec.describe SubscriptionsController, type: :controller do
       before { login(user) } # because user is author, get subscribe automatically, by after_commit adding
 
       it_behaves_like'To delete the object', let(:object){user.subscriptions.last.id}, let(:object_class){user.subscriptions}
+
     end
   end
 end
