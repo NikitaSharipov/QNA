@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :badges
   has_many :votes
   has_many :comments
+  has_many :subscriptions, dependent: :destroy
 
   def author_of?(thing)
     id == thing.author_id
@@ -27,5 +28,9 @@ class User < ApplicationRecord
 
   def add_facebook_name(facebook_name)
     self.facebook_name ||= facebook_name
+  end
+
+  def subscribed_to(question)
+    subscriptions&.find_by(question: question)
   end
 end

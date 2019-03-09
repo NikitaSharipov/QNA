@@ -39,6 +39,12 @@ gem 'gon'
 gem 'letter_opener'
 gem 'capybara-email'
 gem 'cancancan'
+gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
 
 gem 'omniauth'
 gem 'omniauth-github'

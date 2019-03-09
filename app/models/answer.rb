@@ -15,6 +15,8 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
+  after_commit :send_notification, on: :create
+
   def best!
     unless self.best?
       transaction do
@@ -23,6 +25,12 @@ class Answer < ApplicationRecord
         self.update!(best: true)
       end
     end
+  end
+
+  private
+
+  def send_notification
+    NewAnswerNotificationJob.perform_later(self)
   end
 
 

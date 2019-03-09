@@ -33,4 +33,13 @@ RSpec.describe User, type: :model do
       User.find_for_oauth(auth, email)
     end
   end
+
+  describe '#subscribed_to' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, author: user) }
+
+    it 'should get subscription entry' do
+      expect(user.subscribed_to(question)).to eq Subscription.last
+    end
+  end
 end

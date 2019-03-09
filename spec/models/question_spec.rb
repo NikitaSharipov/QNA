@@ -26,4 +26,23 @@ RSpec.describe Question, type: :model do
       let(:commentable) { create(:question, author: user)}
     end
   end
+
+  describe 'reputation' do
+    let(:user) { create(:user)}
+    let(:question) { build(:question, author: user) }
+
+    it 'calls ReputationJob' do
+      expect(ReputationJob).to receive(:perform_later).with(question)
+      question.save!
+    end
+  end
+
+  describe '#subscribers' do
+    let(:user) { create(:user)}
+    let(:question) { create(:question, author: user)}
+
+    it 'should get array of users' do
+      expect(question.subscribers).to eq [user]
+    end
+  end
 end
