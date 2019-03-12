@@ -1,4 +1,4 @@
-.float-right = render 'shared/search'
+.search.float-right = render 'shared/search'
 
 - if user_signed_in?
    = link_to 'Log out', destroy_user_session_path, method: :delete, class: 'btn btn-link'
