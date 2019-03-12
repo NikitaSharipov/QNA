@@ -10,19 +10,38 @@ feature 'User can use Search', %q{
   given!(:comment) { create(:comment, commentable: answer, user: user, body: 'test')}
 
 
+  %w(User Question Answer Comment).each do |klass|
+    scenario "Try to find #{klass}", js: true do
+      ThinkingSphinx::Test.run do
+        visit questions_path
 
-  scenario "Try to find question", js: true do
+        within('.search') do
+          select klass, from: 'category'
+          fill_in 'search', with: 'test'
+          click_on 'Find!'
+        end
+
+        expect(page).to have_content('test')
+
+      end
+    end
+  end
+
+  scenario "Try to find with Global Search", js: true do
     ThinkingSphinx::Test.run do
-      visit questions_path
+      visit root_path
 
       within('.search') do
-        select 'Question', from: 'category'
+        select 'Global', from: 'category'
         fill_in 'search', with: 'test'
         click_on 'Find!'
       end
 
       expect(page).to have_content('test')
 
+      expect(page).to have_content("Question")
+      expect(page).to have_content("Answer")
+      expect(page).to have_content("Comment")
     end
   end
 end

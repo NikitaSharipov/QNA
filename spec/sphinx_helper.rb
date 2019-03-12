@@ -19,7 +19,7 @@ RSpec.configure do |config|
 
   config.before(:each, js: true) do
     # Default to transaction strategy for all specs
-    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :truncation
 
     ThinkingSphinx::Test.index
   end

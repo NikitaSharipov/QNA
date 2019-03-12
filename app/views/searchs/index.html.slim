@@ -1,6 +1,6 @@
 ul
   - @result.each do |resource|
-    = resource.class.name + ': ' + text_of_resource(resource) + ' '
+    = "#{resource.class.name}: #{text_of_resource(resource)} "
   = will_paginate @result
 
 
