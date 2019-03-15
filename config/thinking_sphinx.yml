@@ -1,0 +1,12 @@
+development:
+  mysql41: 9306
+  enable_star: 1
+  min_infix_len: 4
+test:
+  mysql41: 9307
+  enable_star: 1
+  min_infix_len: 4
+production:
+  mysql41: 9306
+  enable_star: 1
+  min_infix_len: 4

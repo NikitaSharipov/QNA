@@ -45,10 +45,14 @@ gem 'oj'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
+gem 'will_paginate', '~> 3.1.0'
 
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-facebook'
+
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -76,6 +80,8 @@ group :test do
   gem 'shoulda-matchers'
   gem 'rails-controller-testing' # If you are using Rails 5.x
   gem 'launchy'
+
+  gem 'database_cleaner'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

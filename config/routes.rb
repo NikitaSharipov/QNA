@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   resources :advanced_registrations, only: [:new, :create]
 
+  resources :searchs, only: [:index]
+
   namespace :api do
     namespace :v1 do
       resources :profiles, only: [:index] do
