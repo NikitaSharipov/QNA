@@ -100,6 +100,7 @@ Rails.application.configure do
     user_name:      ENV['SENDMAIL_USERNAME'],
     password:       ENV['SENDMAIL_PASSWORD'],
     domain:         'mail.ru',
+    tls: true,
     address:       'smtp.mail.ru',
     port:          '465',
     authentication: :plain,
