@@ -1,4 +1,5 @@
 - resource.comments.each do |comment|
-  .single_comment
-    p= comment.body
+  - cache comment do
+    .single_comment
+      p= comment.body
 

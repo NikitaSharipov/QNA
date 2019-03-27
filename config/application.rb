@@ -22,6 +22,8 @@ module Qna
 
     config.generators do |g|
       g.test_framework :rspec, view_specs: false, helper_specs: false, routing_specs: false, request_specs: false
+
+      config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
     end
   end
 end

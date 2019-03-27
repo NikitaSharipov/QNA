@@ -1,60 +1,61 @@
 -if answer.persisted?
-  div class="answer_title#{answer.id}"
-    -if answer.best?
-      .best
-      span> Best answer!
-    p Answer:  #{answer.body}
-    - if answer.links.present?
-      .links
-        p Answer links:
-        ul
-          - answer.links.each do |link|
-            div class = "link_#{link.id}"
-              li= link_to link.name, link.url
-              - if link.gist?
-                p Gist content: #{link.gist_content}
-              - if current_user&.author_of?(answer)
-                = link_to "Delete", answer_path(answer.id, answer: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
-    =render partial: "/shared/rating", locals: { resource: answer }
+  -cache answer do
+    div class="answer_title#{answer.id}"
+      -if answer.best?
+        .best
+        span> Best answer!
+      p Answer:  #{answer.body}
+      - if answer.links.present?
+        .links
+          p Answer links:
+          ul
+            - answer.links.each do |link|
+              div class = "link_#{link.id}"
+                li= link_to link.name, link.url
+                - if link.gist?
+                  p Gist content: #{link.gist_content}
+                - if current_user&.author_of?(answer)
+                  = link_to "Delete", answer_path(answer.id, answer: { links_attributes: { id: link.id, "_destroy" => true }}), remote: true, confirm: "Really delete?", method: :put
+      =render partial: "/shared/rating", locals: { resource: answer }
 
-    -if can?(:update, answer)
-      = link_to 'Delete', answer, method: :delete, remote: true
-      = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-      -if !answer.best?
-        = link_to 'Mark as best', best_answer_path(answer), method: :post, remote: true
-      = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-        p
-          = f.label :body, 'Your answer'
-          = f.text_area :body
-        p
-          = f.label :files
-          = f.file_field :files, multiple: true
-
-        p Links:
-        p
-          = f.fields_for :links do |l|
-            = render 'shared/link_fields', f: l
+      -if can?(:update, answer)
+        = link_to 'Delete', answer, method: :delete, remote: true
+        = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+        -if !answer.best?
+          = link_to 'Mark as best', best_answer_path(answer), method: :post, remote: true
+        = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
           p
-            = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
+            = f.label :body, 'Your answer'
+            = f.text_area :body
+          p
+            = f.label :files
+            = f.file_field :files, multiple: true
 
-        p= f.submit 'Save'
-    - if answer.files.attached?
-      - answer.files.each do |file|
-        div class = "file_#{file.id}"
-          p= link_to file.filename.to_s, url_for(file)
-          -if current_user&.author_of?(answer)
-            p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
+          p Links:
+          p
+            = f.fields_for :links do |l|
+              = render 'shared/link_fields', f: l
+            p
+              = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
 
-    -if can?(:create_comment, answer)
-      = form_with model: answer, :url => create_comment_answer_path(answer) do |f|
-        p
-          = f.label :comment_body, 'Your comment'
-          = f.text_area :comment_body
+          p= f.submit 'Save'
+      - if answer.files.attached?
+        - answer.files.each do |file|
+          div class = "file_#{file.id}"
+            p= link_to file.filename.to_s, url_for(file)
+            -if current_user&.author_of?(answer)
+              p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
 
-        p= f.submit 'Comment!'
+      -if can?(:create_comment, answer)
+        = form_with model: answer, :url => create_comment_answer_path(answer) do |f|
+          p
+            = f.label :comment_body, 'Your comment'
+            = f.text_area :comment_body
 
-    p Comments:
-    div class="comments for answer_#{answer.id}"
-      = render 'shared/comments', resource: answer
+          p= f.submit 'Comment!'
+
+      p Comments:
+      div class="comments for answer_#{answer.id}"
+        = render 'shared/comments', resource: answer
 
 
