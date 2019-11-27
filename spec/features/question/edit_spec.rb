@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'User can edit his question', %q{
+feature 'User can edit his question', "
   In order to correct mistakes
   As an author of question
   I'd like ot be able to edit my question
-} do
-
+" do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
 
@@ -15,19 +14,16 @@ feature 'User can edit his question', %q{
     expect(page).to_not have_link 'Edit'
   end
 
-  describe 'Authenticated user', js: true  do
-
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
       visit questions_path
     end
 
     scenario 'edits his question' do
-
       click_on 'Edit'
 
       within '.questions' do
-
         fill_in 'Your question title', with: 'edited question title'
         click_on 'Save'
 
@@ -50,7 +46,6 @@ feature 'User can edit his question', %q{
     end
 
     scenario 'edits his question with errors' do
-
       click_on 'Edit'
 
       within '.questions' do
@@ -58,11 +53,9 @@ feature 'User can edit his question', %q{
         click_on 'Save'
       end
       expect(page).to have_content "Title can't be blank"
-
     end
 
     describe 'with another user and question on page' do
-
       given!(:another_user) { create :user }
       given!(:another_question) { create(:question, author: another_user) }
 
@@ -73,8 +66,6 @@ feature 'User can edit his question', %q{
           expect(page).to_not have_link 'Edit'
         end
       end
-
     end
-
   end
 end

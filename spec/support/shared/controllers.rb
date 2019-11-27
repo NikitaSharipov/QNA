@@ -12,14 +12,14 @@ end
 
 shared_examples_for 'To update the object' do
   it 'update the object in the database' do
-    patch :update, params: params.merge({id: object.id }), format: :js
+    patch :update, params: params.merge(id: object.id), format: :js
     expect(assigns(('exposed_' + object.class.to_s.downcase).to_sym)).to eq object
   end
 end
 
 shared_examples_for 'To change the object attributes' do
   it 'change the object attributes' do
-    patch :update, params: params.merge({id: object.id }), format: :js
+    patch :update, params: params.merge(id: object.id), format: :js
     object.reload
 
     expect(object.title).to eq 'new_title' if object.respond_to?(:title)
@@ -27,15 +27,14 @@ shared_examples_for 'To change the object attributes' do
   end
 
   it 'render update view' do
-    patch :update, params: params.merge({id: object.id }), format: :js
+    patch :update, params: params.merge(id: object.id), format: :js
     expect(response).to render_template :update
   end
 end
 
-
 shared_examples_for 'To render update view' do
   it 'render update view' do
-    patch :update, params: params.merge({id: object.id}), format: :js
+    patch :update, params: params.merge(id: object.id), format: :js
     expect(response).to render_template :update
   end
 end

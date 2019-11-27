@@ -14,7 +14,7 @@ module Votable
   end
 
   def voted?(user)
-    self.votes.exists?(user_id: user)
+    votes.exists?(user_id: user)
   end
 
   def rating
@@ -26,6 +26,6 @@ module Votable
   end
 
   def vote_value(user)
-    self.votes.where(user_id: user).first&.value
+    votes.where(user_id: user).first&.value
   end
 end

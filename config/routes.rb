@@ -1,8 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-
-  authenticate :user, lambda { |u| u.admin? } do
+  authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
 
@@ -11,7 +10,6 @@ Rails.application.routes.draw do
     member do
       patch :create_comment
       delete :destroy_comment
-
     end
   end
 
@@ -24,9 +22,9 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
-  resources :questions, concerns: [:votable, :commentable], shallow: true do
-    resources :subscriptions, only: [:create, :destroy]
-    resources :answers, concerns: [:votable, :commentable] do
+  resources :questions, concerns: %i[votable commentable], shallow: true do
+    resources :subscriptions, only: %i[create destroy]
+    resources :answers, concerns: %i[votable commentable] do
       post :best, on: :member
     end
   end
@@ -35,7 +33,7 @@ Rails.application.routes.draw do
 
   resources :badges, only: :index
 
-  resources :advanced_registrations, only: [:new, :create]
+  resources :advanced_registrations, only: %i[new create]
 
   resources :searchs, only: [:index]
 
@@ -45,8 +43,8 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
 
-      resources :questions, only: [:index, :show, :create, :update, :destroy], shallow: true do
-        resources :answers, only: [:index, :show, :create, :update, :destroy]
+      resources :questions, only: %i[index show create update destroy], shallow: true do
+        resources :answers, only: %i[index show create update destroy]
       end
     end
   end

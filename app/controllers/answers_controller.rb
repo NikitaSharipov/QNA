@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   include Commented
 
   expose :question, -> { Question.find(params[:question_id]) }
-  expose :answer, scope: ->{ Answer.with_attached_files }
+  expose :answer, scope: -> { Answer.with_attached_files }
 
   authorize_resource
 
@@ -42,7 +42,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :comment_body, files: [], links_attributes: [:id, :name, :url, :_destroy])
+    params.require(:answer).permit(:body, :comment_body, files: [], links_attributes: %i[id name url _destroy])
   end
 
   def params_links_attributes
@@ -57,7 +57,6 @@ class AnswersController < ApplicationController
       answer_files << { url: url_for(file), name: file.filename.to_s }
     end
 
-    ActionCable.server.broadcast "questions/#{question.id}", { answer: answer.as_json, answer_links: answer.links, answer_files: answer_files }
+    ActionCable.server.broadcast "questions/#{question.id}", answer: answer.as_json, answer_links: answer.links, answer_files: answer_files
   end
-
 end

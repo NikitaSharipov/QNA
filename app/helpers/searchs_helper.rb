@@ -13,6 +13,6 @@ module SearchsHelper
   end
 
   def searchs_types
-    %w(Global User Question Answer Comment)
+    %w[Global User Question Answer Comment]
   end
 end

@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'User can delete his question', %q{
+feature 'User can delete his question', "
   In order to to manage user's questions
   As an authenticated user
   I'd like to be able to delete my question
-} do
-
+" do
   given(:user) { create :user }
   given(:another_user) { create :user }
 
@@ -13,7 +12,6 @@ feature 'User can delete his question', %q{
   given!(:another_question) { create(:question, author: another_user) }
 
   describe 'Authenticated user' do
-
     background do
       sign_in(user)
       visit questions_path

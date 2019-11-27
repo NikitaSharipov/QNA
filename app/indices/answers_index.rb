@@ -1,5 +1,5 @@
 ThinkingSphinx::Index.define :answer, with: :active_record do
-  #fileds
+  # fileds
   indexes body
   indexes author.email, as: :author, sortable: true
 

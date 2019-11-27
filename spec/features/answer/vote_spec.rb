@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'User can vote for the answer', %q{
+feature 'User can vote for the answer', "
   In order to emphasize the answer
   As an user
   I'd like to vote for answer
-} do
-
+" do
   given(:user) { create :user }
   given!(:question) { create(:question, author: user) }
   given!(:answer) { create(:answer, question: question, author: user) }
@@ -17,30 +16,29 @@ feature 'User can vote for the answer', %q{
   end
 
   describe "User vote for another user's answer" do
-
-    given(:another_user) { create :user}
+    given(:another_user) { create :user }
 
     background do
       sign_in(another_user)
       visit question_path(question)
     end
 
-    scenario 'Vote up for answer', js: true  do
+    scenario 'Vote up for answer', js: true do
       click_on 'Vote up'
       expect(page).to have_content 'Voted with value 1'
     end
 
-    scenario 'Vote down for answer', js: true  do
+    scenario 'Vote down for answer', js: true do
       click_on 'Vote down'
       expect(page).to have_content 'Voted with value -1'
     end
 
-    scenario 'Vote for answer', js: true  do
+    scenario 'Vote for answer', js: true do
       click_on 'Vote up'
       expect(page).to have_content 'Cancel'
     end
 
-    scenario 'Vote for answer after Cancel', js: true  do
+    scenario 'Vote for answer after Cancel', js: true do
       click_on 'Vote up'
       click_on 'Cancel'
       expect(page).to have_content 'Vote up'
@@ -49,7 +47,5 @@ feature 'User can vote for the answer', %q{
     scenario 'show resulting rating' do
       expect(page).to have_content 'Resulting rating: 0'
     end
-
   end
-
 end

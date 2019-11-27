@@ -1,6 +1,5 @@
 class GetGistService
-
-  def initialize (client: default_client)
+  def initialize(client: default_client)
     @client = client
   end
 
@@ -13,5 +12,4 @@ class GetGistService
   def default_client
     Octokit::Client.new
   end
-
 end

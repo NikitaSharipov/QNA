@@ -6,7 +6,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
   end
 
   describe 'Github' do
-    let(:oauth_data) { {'provider' => 'github', 'uid' => 123, 'info'=> {'email' => 'email@email.ru'} } }
+    let(:oauth_data) { { 'provider' => 'github', 'uid' => 123, 'info' => { 'email' => 'email@email.ru' } } }
     let(:email) { 'email@email.ru' }
 
     it 'finds user from oauth data' do
@@ -28,7 +28,6 @@ RSpec.describe OauthCallbacksController, type: :controller do
         expect(subject.current_user).to eq user
       end
 
-
       it 'redirects to root path' do
         expect(response).to redirect_to root_path
       end
@@ -44,17 +43,14 @@ RSpec.describe OauthCallbacksController, type: :controller do
         expect(response).to redirect_to root_path
       end
 
-
       it 'does not login user' do
         expect(subject.current_user).to_not be
       end
     end
   end
 
-
-
   describe 'Facebook' do
-    let(:oauth_data) { {'provider' => 'Facebook', 'uid' => 123, 'info'=> {'email' => 'example@mail.com', 'name' => 'name'} } }
+    let(:oauth_data) { { 'provider' => 'Facebook', 'uid' => 123, 'info' => { 'email' => 'example@mail.com', 'name' => 'name' } } }
     let(:email) { nil }
 
     it 'finds user from oauth data' do
@@ -76,7 +72,6 @@ RSpec.describe OauthCallbacksController, type: :controller do
         expect(subject.current_user).to eq user
       end
 
-
       it 'redirects to root path' do
         expect(response).to redirect_to root_path
       end
@@ -92,11 +87,9 @@ RSpec.describe OauthCallbacksController, type: :controller do
         expect(response).to redirect_to new_advanced_registration_path
       end
 
-
       it 'does not login user' do
         expect(subject.current_user).to_not be
       end
     end
-
   end
 end

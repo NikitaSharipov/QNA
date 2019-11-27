@@ -4,6 +4,6 @@ class AnswerSerializer < ActiveModel::Serializer
   has_many :links
 
   def files
-    object.files.map{|f| f.service_url}
+    object.files.map(&:service_url)
   end
 end

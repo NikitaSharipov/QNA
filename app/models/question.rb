@@ -6,7 +6,7 @@ class Question < ApplicationRecord
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
-  #has_many :comments, dependent: :destroy, as: :commentable
+  # has_many :comments, dependent: :destroy, as: :commentable
   has_many_attached :files
   has_one :badge
   has_many :subscriptions, dependent: :destroy
@@ -21,7 +21,7 @@ class Question < ApplicationRecord
   after_commit :subscribe_for_updates, on: :create
 
   def best_answer
-    self.answers.where(best: true).first
+    answers.where(best: true).first
   end
 
   private
@@ -33,5 +33,4 @@ class Question < ApplicationRecord
   def subscribe_for_updates
     subscriptions.create(user: author)
   end
-
 end

@@ -1,18 +1,16 @@
 require 'rails_helper'
 
-feature 'User can sign up', %q{
+feature 'User can sign up', "
   In order to ask questions
   As an unauthenticated user
   I'd like to be able to sign up
-} do
-
+" do
   background do
     visit root_path
     click_on 'Sign up'
   end
 
   scenario 'Unregistered user tries to sign up' do
-
     fill_in 'Email', with: 'test@user'
     fill_in 'Password', with: '12345678'
     fill_in 'Password confirmation', with: '12345678'

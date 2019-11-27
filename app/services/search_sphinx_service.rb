@@ -1,5 +1,4 @@
 class Services::SearchSphinxService
-
   include SearchsHelper
 
   def search(category_name, search_value, page)
@@ -11,7 +10,6 @@ class Services::SearchSphinxService
   def category(category_name)
     category_name == 'Global' ? ThinkingSphinx : category_name.constantize
   end
-
 
   def escape(search_value)
     ThinkingSphinx::Query.escape(search_value)

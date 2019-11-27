@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-feature 'User can delete his answer', %q{
+feature 'User can delete his answer', "
   In order to to manage user's answer
   As an authenticated user
   I'd like to be able to delete my answer
-} do
-
+" do
   given(:user) { create :user }
   given(:another_user) { create :user }
 
@@ -15,7 +14,6 @@ feature 'User can delete his answer', %q{
   given!(:another_answer) { create(:answer, question: question, author: another_user) }
 
   describe 'Authenticated user' do
-
     background do
       sign_in(user)
       visit question_path(question)

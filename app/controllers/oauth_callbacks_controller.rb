@@ -1,14 +1,11 @@
 class OauthCallbacksController < Devise::OmniauthCallbacksController
-
   def github
     connection('Github', request.env['omniauth.auth'].try(:[], 'info').try(:[], 'email'))
   end
 
   def facebook
-    if User.where(facebook_name: request_info.try(:[], 'name')).length == 0
-      if request_info.try(:[], 'email').blank? && !session[:pre_email]
-        redirect_to new_advanced_registration_path and return
-      end
+    if User.where(facebook_name: request_info.try(:[], 'name')).empty?
+      redirect_to(new_advanced_registration_path) && return if request_info.try(:[], 'email').blank? && !session[:pre_email]
     end
 
     email = session[:pre_email] || User.where(facebook_name: request_info.try(:[], 'name')).first&.email
@@ -33,5 +30,4 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
   def request_info
     request.env['omniauth.auth'].try(:[], 'info')
   end
-
 end

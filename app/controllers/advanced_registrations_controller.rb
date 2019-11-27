@@ -1,9 +1,7 @@
 class AdvancedRegistrationsController < ApplicationController
-
   skip_authorization_check
 
-  def new
-  end
+  def new; end
 
   def create
     email = params[:email]
@@ -14,7 +12,5 @@ class AdvancedRegistrationsController < ApplicationController
       session[:pre_email] = email
       redirect_to user_session_path, notice: 'Вам отправленно письмо на почту для подтверждения авторизации'
     end
-
   end
-
 end

@@ -8,5 +8,4 @@ module Commentable
   def create_comment(user, body)
     comments.create(user: user, body: body)
   end
-
 end

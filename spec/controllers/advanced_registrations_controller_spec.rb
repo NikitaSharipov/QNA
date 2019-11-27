@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe AdvancedRegistrationsController, type: :controller do
-
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'save a new user in the database' do
@@ -18,8 +17,6 @@ RSpec.describe AdvancedRegistrationsController, type: :controller do
       it 'does not save the user' do
         expect { post :create, params: { email: '' }, format: :js }.to change(User, :count).by(0)
       end
-
     end
   end
-
 end

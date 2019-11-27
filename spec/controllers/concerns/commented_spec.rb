@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 shared_examples "Commented" do
-
   it 'create comment' do
     login(user)
     votable = commented.class.name.downcase.to_sym

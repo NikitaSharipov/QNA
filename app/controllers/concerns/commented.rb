@@ -2,8 +2,7 @@ module Commented
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_commentable, only: [:create_comment, :destroy_comment]
-
+    before_action :set_commentable, only: %i[create_comment destroy_comment]
   end
 
   def create_comment
@@ -28,5 +27,4 @@ module Commented
   def set_body
     params.require(model_name).permit(:comment_body)
   end
-
 end

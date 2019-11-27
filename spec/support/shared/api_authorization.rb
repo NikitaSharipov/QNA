@@ -6,7 +6,7 @@ shared_examples_for 'API Authorizable' do
     end
 
     it 'returns 401 status if access_token is invalid' do
-      do_request(method, api_path, params: {access_token: '1234'}, headers: headers)
+      do_request(method, api_path, params: { access_token: '1234' }, headers: headers)
       expect(response.status).to eq 401
     end
   end

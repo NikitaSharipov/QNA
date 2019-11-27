@@ -1,16 +1,14 @@
 require 'rails_helper'
 
-feature 'User can answer the question', %q{
+feature 'User can answer the question', "
   In order to solve other user's problem
   As an authenticated user
   I'd like to be able to answer the question
-} do
-
+" do
   given(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
 
   describe 'Authenricated user', js: true do
-
     background do
       sign_in(user)
       visit question_path(question)
@@ -22,7 +20,7 @@ feature 'User can answer the question', %q{
 
       expect(page).to have_content 'text text text'
 
-      expect(page).to have_field("answer_body", :with => "")
+      expect(page).to have_field("answer_body", with: "")
     end
 
     scenario 'answer the question with errors' do
@@ -39,7 +37,6 @@ feature 'User can answer the question', %q{
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
     end
-
   end
 
   scenario 'Unauthenticated user tries to answer a question' do
@@ -68,7 +65,5 @@ feature 'User can answer the question', %q{
         expect(page).to have_content 'text text text'
       end
     end
-
   end
-
 end

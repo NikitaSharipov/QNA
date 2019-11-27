@@ -1,18 +1,16 @@
 require 'rails_helper'
 
-feature 'User can delete the file attached to the question', %q{
+feature 'User can delete the file attached to the question', "
   As an author of question
   I'd like to be able to delete the file attached to my question
-} do
-
+" do
   given!(:user) { create(:user) }
   given(:another_user) { create :user }
 
   given!(:question) { create(:question, :with_file, author: user) }
   given!(:another_question) { create(:question, :with_file, author: another_user) }
 
-  describe 'Authenticated user', js: true  do
-
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
     end
@@ -27,7 +25,5 @@ feature 'User can delete the file attached to the question', %q{
       visit question_path(another_question)
       expect(page).not_to have_link 'Delete file'
     end
-
   end
-
 end

@@ -25,7 +25,7 @@ describe Ability, type: :model do
     let(:other) { create :user }
 
     let(:question) { create :question, author: user }
-    let(:other_question) { create :question, author: other}
+    let(:other_question) { create :question, author: other }
 
     let(:answer) { create :answer, author: user, question: question }
     let(:other_answer) { create :answer, author: other, question: question }
@@ -69,12 +69,9 @@ describe Ability, type: :model do
 
     it { should be_able_to :best, Answer }
 
-
     it { should be_able_to :destroy, link }
 
     it { should be_able_to :index, BadgesController }
     it { should be_able_to :manage, ActiveStorage::Attachment }
-
   end
-
 end

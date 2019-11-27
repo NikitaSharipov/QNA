@@ -1,5 +1,5 @@
 ThinkingSphinx::Index.define :comment, with: :active_record do
-  #fileds
+  # fileds
   indexes body
   indexes user.email, as: :user, sortable: true
 

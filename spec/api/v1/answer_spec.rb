@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe 'Answers API', type: :request do
-  let(:headers) {{"CONTENT_TYPE" => "application/json",
-                  "ACCEPT" => 'application/json'}}
+  let(:headers) do
+    { "CONTENT_TYPE" => "application/json",
+      "ACCEPT" => 'application/json' }
+  end
 
   describe 'GET /api/v1/questions/:question_id/answers' do
     let(:user)     { create(:user) }
@@ -16,17 +18,16 @@ describe 'Answers API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token) }
       let!(:answers) { create_list(:answer, 2, question: question, author: user) }
-      let(:answer) { answers.first}
+      let(:answer) { answers.first }
 
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
 
-
       it_behaves_like 'Request returns 200'
 
-      it_behaves_like 'Returns list of object', let(:json_object) {json['answers']}
+      it_behaves_like 'Returns list of object', let(:json_object) { json['answers'] }
 
-      it_behaves_like 'Returns all public fields', let(:fields) {%w[id body created_at updated_at]},
-        let(:object_response) {json['answers'].first}, let(:object) {answer}
+      it_behaves_like 'Returns all public fields', let(:fields) { %w[id body created_at updated_at] },
+                      let(:object_response) { json['answers'].first }, let(:object) { answer }
     end
   end
 
@@ -43,7 +44,6 @@ describe 'Answers API', type: :request do
     it_behaves_like 'API Authorizable' do
       let(:method) { :get }
     end
-
 
     context 'authorized' do
       before { get api_path, params: { access_token: access_token.token }, headers: headers }
@@ -71,12 +71,11 @@ describe 'Answers API', type: :request do
     let(:question)     { create(:question, author: user) }
     let(:api_path)     { "/api/v1/questions/#{question.id}/answers" }
     let(:access_token) { create(:access_token) }
-    let(:headers) {{"ACCEPT" => 'application/json'}}
+    let(:headers) { { "ACCEPT" => 'application/json' } }
 
     it 'ddd' do
-      send :post, "/api/v1/questions/#{question.id}/answers", {:params=>{:access_token=>'1234'}}
+      send :post, "/api/v1/questions/#{question.id}/answers", params: { access_token: '1234' }
     end
-
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :post }
@@ -88,19 +87,19 @@ describe 'Answers API', type: :request do
   end
 
   describe 'UPDATE /api/v1/answers/:id' do
-    let(:user)            { create(:user) }
+    let(:user) { create(:user) }
     let!(:question) { create(:question, author: user) }
     let!(:answer)   { create(:answer, question: question, author: user) }
     let(:access_token)    { create(:access_token) }
     let(:api_path)        { "/api/v1/answers/#{answer.id}" }
-    let(:headers) {{"ACCEPT" => 'application/json'}}
+    let(:headers) { { "ACCEPT" => 'application/json' } }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :patch }
     end
 
     context 'authorized' do
-      before { patch api_path, params: { access_token: access_token.token, answer: {body: 'Body_new' } } }
+      before { patch api_path, params: { access_token: access_token.token, answer: { body: 'Body_new' } } }
 
       it_behaves_like 'Request returns 200'
 
@@ -116,8 +115,8 @@ describe 'Answers API', type: :request do
     let(:question)      { create(:question, author: user) }
     let!(:answer) { create(:answer, question: question, author: user) }
     let(:access_token)  { create(:access_token) }
-    let(:api_path)      { "/api/v1/answers/#{answer.id}"  }
-    let(:headers) {{"ACCEPT" => 'application/json'}}
+    let(:api_path)      { "/api/v1/answers/#{answer.id}" }
+    let(:headers) { { "ACCEPT" => 'application/json' } }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :delete }
@@ -131,7 +130,5 @@ describe 'Answers API', type: :request do
     it 'delete the object' do
       expect { delete api_path, params: { access_token: access_token.token } }.to change(Answer, :count).by(-1)
     end
-
   end
-
 end

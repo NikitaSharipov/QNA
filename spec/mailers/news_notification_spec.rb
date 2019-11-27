@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe NewsNotificationMailer, type: :mailer do
   describe "notify" do
     let(:user) { create(:user) }
-    let(:question) { create(:question, author: user)}
+    let(:question) { create(:question, author: user) }
     let(:answer) { create(:answer, question: question, author: user) }
     let(:mail) { NewsNotificationMailer.notify(answer, user) }
 
@@ -16,5 +16,4 @@ RSpec.describe NewsNotificationMailer, type: :mailer do
       expect(mail.body.encoded).to match(answer.body)
     end
   end
-
 end

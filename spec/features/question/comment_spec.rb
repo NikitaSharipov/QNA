@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-feature 'User can see new comments in real time', %q{
-} do
-
+feature 'User can see new comments in real time', '
+' do
   given(:user) { create(:user) }
   given!(:question) { create(:question, author: user) }
 
@@ -28,5 +27,4 @@ feature 'User can see new comments in real time', %q{
       end
     end
   end
-
 end

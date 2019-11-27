@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'User can view the list of questions', %q{
+feature 'User can view the list of questions', "
   In order to solve problems
   As an user
   I'd like to be able to view all questions from a community
-} do
+" do
   given(:user) { create :user }
   given!(:question) { create(:question, author: user) }
   given!(:questions) { create_list :question, 3, author: user }

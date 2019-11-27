@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Subscription, type: :model do
-  let!(:user) { create(:user)}
-  let!(:question) { create(:question, author: user)}
+  let!(:user) { create(:user) }
+  let!(:question) { create(:question, author: user) }
 
   it { should belong_to :user }
 

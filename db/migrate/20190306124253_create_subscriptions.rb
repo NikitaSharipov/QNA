@@ -4,10 +4,9 @@ class CreateSubscriptions < ActiveRecord::Migration[5.2]
       t.references :user, foreign_key: true
       t.references :question, foreign_key: true
 
-
       t.timestamps
     end
 
-    add_index :subscriptions, [:user_id, :question_id], unique: true
+    add_index :subscriptions, %i[user_id question_id], unique: true
   end
 end

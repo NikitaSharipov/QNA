@@ -7,16 +7,12 @@ class SubscriptionsController < ApplicationController
     @question = Question.find(params[:question_id])
     @subscription = current_user.subscriptions.new(question: @question)
 
-    if !@subscription.save
-      head :unprocessable_entity
-    end
+    head :unprocessable_entity unless @subscription.save
   end
 
   def destroy
     @subscription = current_user.subscriptions.find(params[:id])
 
-    if !@subscription.destroy
-      head :unprocessable_entity
-    end
+    head :unprocessable_entity unless @subscription.destroy
   end
 end

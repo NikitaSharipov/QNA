@@ -7,7 +7,7 @@ RSpec.describe Services::SearchSphinxService do
       subject.search('Global', 'Test Search', 1)
     end
 
-    %w(User Question Answer Comment).each do |klass|
+    %w[User Question Answer Comment].each do |klass|
       it "should return an array of #{klass} class objects" do
         expect(klass.constantize).to receive(:search).with('Test Search', page: 1, per_page: 3)
         subject.search(klass, 'Test Search', 1)

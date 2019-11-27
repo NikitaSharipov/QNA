@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
-  it { should have_many( :comments).dependent(:destroy)}
+  it { should have_many(:comments).dependent(:destroy) }
 
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
@@ -16,19 +16,19 @@ RSpec.describe Question, type: :model do
 
   describe Question do
     it_behaves_like "Votable" do
-      let(:user) { create(:user)}
+      let(:user) { create(:user) }
       let(:another_user) { create :user }
       let(:votable) { create(:question, author: user) }
     end
 
     it_behaves_like "Commentable" do
-      let(:user) { create(:user)}
-      let(:commentable) { create(:question, author: user)}
+      let(:user) { create(:user) }
+      let(:commentable) { create(:question, author: user) }
     end
   end
 
   describe 'reputation' do
-    let(:user) { create(:user)}
+    let(:user) { create(:user) }
     let(:question) { build(:question, author: user) }
 
     it 'calls ReputationJob' do
@@ -38,8 +38,8 @@ RSpec.describe Question, type: :model do
   end
 
   describe '#subscribers' do
-    let(:user) { create(:user)}
-    let(:question) { create(:question, author: user)}
+    let(:user) { create(:user) }
+    let(:question) { create(:question, author: user) }
 
     it 'should get array of users' do
       expect(question.subscribers).to eq [user]

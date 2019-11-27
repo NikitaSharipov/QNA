@@ -11,16 +11,15 @@ RSpec.describe SearchsController, type: :controller do
 
       it 'searches for result' do
         expect(sphinx_service).to receive(:search).with('Global', 'test', '1')
-        get :index, params: {category: 'Global', search: 'test', page: '1'}
+        get :index, params: { category: 'Global', search: 'test', page: '1' }
       end
 
       it "should render :index" do
         allow(sphinx_service).to receive(:search).with('Global', 'test', '1').and_return([])
-        get :index, params: {category: 'Global', search: 'test', page: '1'}
+        get :index, params: { category: 'Global', search: 'test', page: '1' }
 
         expect(response).to render_template(:index)
       end
-
     end
   end
 end

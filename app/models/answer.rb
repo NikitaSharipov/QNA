@@ -9,7 +9,7 @@ class Answer < ApplicationRecord
 
   has_many :links, dependent: :destroy, as: :linkable
   has_many :votes, dependent: :destroy, as: :votable
-  #has_many :comments, dependent: :destroy, as: :commentable
+  # has_many :comments, dependent: :destroy, as: :commentable
   has_many_attached :files
   has_one :badge
 
@@ -18,11 +18,11 @@ class Answer < ApplicationRecord
   after_commit :send_notification, on: :create
 
   def best!
-    unless self.best?
+    unless best?
       transaction do
-        question.badge.update!(user: question.author, answer: self) if question.badge
+        question.badge&.update!(user: question.author, answer: self)
         question.best_answer&.update!(best: false)
-        self.update!(best: true)
+        update!(best: true)
       end
     end
   end
@@ -32,7 +32,4 @@ class Answer < ApplicationRecord
   def send_notification
     NewAnswerNotificationJob.perform_later(self)
   end
-
-
-
 end

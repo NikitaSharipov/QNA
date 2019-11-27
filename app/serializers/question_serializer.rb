@@ -8,6 +8,6 @@ class QuestionSerializer < ActiveModel::Serializer
   end
 
   def files
-    object.files.map{|f| f.service_url}
+    object.files.map(&:service_url)
   end
 end

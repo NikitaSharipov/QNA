@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_06_124253) do
-
+ActiveRecord::Schema.define(version: 20_190_306_124_253) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,7 +21,7 @@ ActiveRecord::Schema.define(version: 2019_03_06_124253) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index %w[record_type record_id name blob_id], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -53,7 +52,7 @@ ActiveRecord::Schema.define(version: 2019_03_06_124253) do
     t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["provider", "uid"], name: "index_authorizations_on_provider_and_uid"
+    t.index %w[provider uid], name: "index_authorizations_on_provider_and_uid"
     t.index ["user_id"], name: "index_authorizations_on_user_id"
   end
 
@@ -76,7 +75,7 @@ ActiveRecord::Schema.define(version: 2019_03_06_124253) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index %w[commentable_type commentable_id], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -87,7 +86,7 @@ ActiveRecord::Schema.define(version: 2019_03_06_124253) do
     t.bigint "linkable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id"
+    t.index %w[linkable_type linkable_id], name: "index_links_on_linkable_type_and_linkable_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -147,7 +146,7 @@ ActiveRecord::Schema.define(version: 2019_03_06_124253) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_subscriptions_on_question_id"
-    t.index ["user_id", "question_id"], name: "index_subscriptions_on_user_id_and_question_id", unique: true
+    t.index %w[user_id question_id], name: "index_subscriptions_on_user_id_and_question_id", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -178,7 +177,7 @@ ActiveRecord::Schema.define(version: 2019_03_06_124253) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_votes_on_user_id"
-    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
+    t.index %w[votable_type votable_id], name: "index_votes_on_votable_type_and_votable_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

@@ -8,8 +8,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     before { login(user) }
     context 'with valid attributes' do
-
-      it_behaves_like 'To save a new object', let(:params) { { question_id: question, answer: attributes_for(:answer) }}, let(:object_class) { Answer }, let(:object) { 'answer' }
+      it_behaves_like 'To save a new object', let(:params) { { question_id: question, answer: attributes_for(:answer) } }, let(:object_class) { Answer }, let(:object) { 'answer' }
 
       it 'saves a new answer belongs to user in the database' do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }.to change(user.answers, :count).by(1)
@@ -22,9 +21,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'with invalid attributes' do
-
       it_behaves_like 'does not save a new object', let(:params) { { question_id: question, answer: attributes_for(:answer, :invalid) } }, let(:object_class) { Answer }
-
 
       it 're-renders new view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid), format: :js }
@@ -34,7 +31,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-
     before { answer }
 
     context 'Authenticated user tries' do
@@ -58,13 +54,10 @@ RSpec.describe AnswersController, type: :controller do
     it 'Not Authenticated user tries deletes a answer' do
       expect { delete :destroy, params: { id: answer }, format: :js }.not_to change(Answer, :count)
     end
-
   end
 
   describe 'PATCH #update' do
-
     context 'Authenticated ' do
-
       let(:link) { create(:link, linkable: answer) }
       let!(:another_user) { create(:user) }
       let!(:foreign_answer) { create(:answer, question: question, author: another_user) }
@@ -72,9 +65,8 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       context 'answer author tries to update answer' do
-
         context 'with valid attributes' do
-          it_behaves_like 'To update the object', let(:params) {  { question_id: question, answer: attributes_for(:answer) } }, let(:object) { answer }
+          it_behaves_like 'To update the object', let(:params) { { question_id: question, answer: attributes_for(:answer) } }, let(:object) { answer }
           it_behaves_like 'To change the object attributes', let(:params) { { answer: { body: 'new_body' } } }, let(:object) { answer }
         end
 
@@ -99,16 +91,14 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'renders shared/delete_link' do
-        put :update, params: { id: answer, answer: { links_attributes: { id: link.id, "_destroy" => true }} }, format: :js
+        put :update, params: { id: answer, answer: { links_attributes: { id: link.id, "_destroy" => true } } }, format: :js
         expect(response).to render_template "shared/delete_link"
       end
-
     end
   end
 
   describe 'PATCH #best' do
     context 'Authenticated ' do
-
       let!(:another_user) { create(:user) }
       let!(:foreign_answer) { create(:answer, question: question, author: another_user) }
 
@@ -128,7 +118,6 @@ RSpec.describe AnswersController, type: :controller do
         post :best, params: { id: foreign_answer }, format: :js
         expect { answer.reload }.not_to change(answer, :best?)
       end
-
     end
   end
 
@@ -144,5 +133,4 @@ RSpec.describe AnswersController, type: :controller do
     let(:question) { create(:question, author: user) }
     let(:commented) { create(:answer, question: question, author: user) }
   end
-
 end

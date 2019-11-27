@@ -1,15 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-
   let(:user) { create(:user) }
   let!(:question) { create(:question, author: user) }
-
 
   describe 'POST #create' do
     before { login(user) }
     context 'with valid attributes' do
-
       it_behaves_like 'To save a new object', let(:params) { { question: attributes_for(:question) } }, let(:object_class) { Question }, let(:object) { 'question' }
 
       it 'redirects to show view' do
@@ -29,12 +26,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-
     let(:link) { create(:link, linkable: question) }
 
     before { login(user) }
     context 'with valid attributes' do
-
       it_behaves_like 'To update the object', let(:params) { { question: attributes_for(:question) } }, let(:object) { question }
       it_behaves_like 'To change the object attributes', let(:params) { { question: { title: 'new_title', body: 'new_body' } } }, let(:object) { question }
 
@@ -58,14 +53,13 @@ RSpec.describe QuestionsController, type: :controller do
       it_behaves_like 'To render update view', let(:params) { { question: attributes_for(:question, :invalid) } }, let(:object) { question }
 
       it 'renders shared/delete_link' do
-        put :update, params: { id: question, question: { links_attributes: { id: link.id, "_destroy" => true }} }, format: :js
+        put :update, params: { id: question, question: { links_attributes: { id: link.id, "_destroy" => true } } }, format: :js
         expect(response).to render_template "shared/delete_link"
       end
     end
   end
 
   describe 'DELETE #destroy' do
-
     before { question }
 
     context 'Authenticated user tries' do
@@ -89,7 +83,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'Not Authenticated user tries deletes a question' do
       expect { delete :destroy, params: { id: question } }.not_to change(Question, :count)
     end
-
   end
 
   describe 'GET #new' do
@@ -109,7 +102,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assigns new link for answer' do
       expect(assigns(:exposed_answer).links.first).to be_a_new(Link)
     end
-
   end
 
   it_behaves_like 'Voted' do
