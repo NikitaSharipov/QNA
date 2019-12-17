@@ -1,24 +1,8 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Question and answer - приложение для вопросов и ответов.
 
-Things you may want to cover:
+Ruby version: 2.5.3 Rails: 5.2.2 Database: Postgresql
 
-* Ruby version
+При разработке проекта была применена методология TDD. В самом проекте для удаленного хранения файлов использовалась библиотека ActiveStorage. Реализована аутентефикация через github. (Протокол OAuth) Разработан Api. Реализован полнотекстовый поиск при помощи Sphinx. Использовались такие технологии как ActionCabel, фоновые задачи. Для создания и управления ролями и правами пользователей в приложении использован гем cancancan. Была осуществленна работа с полиморфными асоциациями.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
